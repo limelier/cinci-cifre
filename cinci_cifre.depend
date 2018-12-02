@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1543509740 source:c:\users\asus\desktop\cinci_cifre\main.cpp
+	<iostream>
+	<winbgim.h>
+	<stdlib.h>
+
