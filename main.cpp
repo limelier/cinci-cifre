@@ -7,7 +7,8 @@ int main() {
 
     initwindow(800,600);
     
-    drawDisabledDigit(200, 200, 4);
+    drawEnabledDigit(200, 200, 4);
+    drawEnabledDigit(200 + DIGIT_TILE_WIDTH + 3, 200, 5);
     
     getch();
     closegraph();

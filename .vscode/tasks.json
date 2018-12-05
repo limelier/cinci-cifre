@@ -43,8 +43,7 @@
             "group": {
                 "kind": "test",
                 "isDefault": true
-            },
-            "key": "ctrl+shift+alt+b"
+            }
         }
     ]
 }
