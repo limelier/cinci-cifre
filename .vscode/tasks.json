@@ -35,6 +35,16 @@
                     "message": 5
                 }
             }
+        },
+        {
+            "label": "Run task",
+            "type": "shell",
+            "command": "./prog.exe",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "key": "ctrl+shift+alt+b"
         }
     ]
 }
