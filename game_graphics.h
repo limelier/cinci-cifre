@@ -4,8 +4,9 @@
 
 // CONSTANTS
 
-const int DIGIT_TILE_HEIGHT = 19;
-const int DIGIT_TILE_WIDTH = 11;
+const int DIGIT_TILE_HEIGHT = 35;
+const int DIGIT_TILE_WIDTH = 25;
+const int DIGIT_TEXT_SIZE = 4;
 
 struct RGB_color {
     int r;
@@ -56,10 +57,7 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
     setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
     setbkcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
 
-    /* QUARANTINE. THESE FUNCTIONS ARE EVIL AND I STILL DON'T KNOW HOW THEY WORK.
-    setusercharsize(3, 1, 2, 1);
-    settextstyle(EUROPEAN_FONT, HORIZ_DIR, 0);
-    */
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, DIGIT_TEXT_SIZE);
     
     outtextxy(left + 2, top + 2, text);
 }
@@ -87,4 +85,15 @@ void drawHiddenPerm(int left, int top) {
     for (int i = 0; i < PERM_LEN; i++) {
         drawHiddenDigit(left + (DIGIT_TILE_WIDTH + 2) * i, top);
     }
+}
+
+void drawResult(int left, int top, result res, bool greyed_out) {
+    drawDigit(left, top, res.fixed, greyed_out);
+    drawDigit(left + DIGIT_TILE_WIDTH + 6, top, res.moved, greyed_out);
+}
+
+void drawGuess(int left, int top, permutation guess, result res, bool greyed_out) {
+    drawPerm(left, top, guess, greyed_out);
+    int result_offset = 5 * DIGIT_TILE_WIDTH + 20;
+    drawResult(left + result_offset, top, res, greyed_out);
 }

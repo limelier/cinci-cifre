@@ -7,13 +7,15 @@ using namespace std;
 int main() {
 
     initwindow(800,600);
-    
+
     permutation perm1 = inputPermutation(); // todo make file input
     permutation perm2 = inputPermutation();
 
-    drawPerm(200, 200, perm1, true);
-    drawPerm(200, 250, perm2, false);
+    drawPerm(200, 200, perm1, false);
     drawHiddenPerm(200, 300);
+    
+    result res = comparePermutations(perm1, perm2);
+    drawGuess(200, 250, perm2, res, true);
     
     getch();
     closegraph();
