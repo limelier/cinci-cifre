@@ -16,6 +16,24 @@ struct result {
     unsigned short moved = 0;
 };
 
+struct guessnode {
+    permutation perm;
+    result res;
+    guessnode *next = nullptr;
+};
+
+struct guesslist {
+    guessnode *first = nullptr;
+    guessnode *last = nullptr;
+    unsigned int num = 0;
+};
+
+struct game {
+    permutation base_perm;
+    guesslist list;
+    bool hasBeenWon = 0;
+};
+
 result comparePermutations(permutation target, permutation compared) {
     result comp_result;
 
