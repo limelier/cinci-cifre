@@ -6,6 +6,7 @@
 
 const int DIGIT_TILE_HEIGHT = 35;
 const int DIGIT_TILE_WIDTH = 25;
+const int TILE_SHADOW_HGT = 3;
 const int DIGIT_TEXT_SIZE = 4;
 
 struct RGB_color {
@@ -14,13 +15,23 @@ struct RGB_color {
     int b;
 };
 
+const RGB_color _BLUE {62, 165, 245};
+const RGB_color _DK_BLUE {21, 101, 192};
+const RGB_color _BLUEGRAY {120, 144, 156};
+const RGB_color _DK_BLUEGRAY {55, 71, 79};
+const RGB_color _RED {239, 83, 80};
+const RGB_color _DK_RED {183, 28, 28};
+
 const RGB_color _WHITE {225, 225, 225};
 const RGB_color _BLACK {25, 25, 25};
-const RGB_color _RED {255, 100, 100};
 const RGB_color _GREY {100, 100, 100};
 
-#define GREYED_OUT_DIGIT_BG _GREY
-#define NORMAL_DIGIT_BG _WHITE
+#define GREYED_OUT_DIGIT_BG1 _BLUEGRAY
+#define GREYED_OUT_DIGIT_BG2 _DK_BLUEGRAY
+#define NORMAL_DIGIT_BG1 _BLUE
+#define NORMAL_DIGIT_BG2 _DK_BLUE
+#define HIDDEN_DIGIT_BG1 _RED
+#define HIDDEN_DIGIT_BG2 _DK_RED
 
 // FUNCTIONS
 
@@ -37,25 +48,33 @@ void drawFilledRect(int left, int top, int right, int bottom) {
 }
 
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
-    RGB_color bg_color;
-    if (greyed_out == true)
-        bg_color = GREYED_OUT_DIGIT_BG;
-    else
-        bg_color = NORMAL_DIGIT_BG;
+    RGB_color bg_color1, bg_color2;
+    if (greyed_out == true) {
+        bg_color1 = GREYED_OUT_DIGIT_BG1;
+        bg_color2 = GREYED_OUT_DIGIT_BG2;
+    }
+    else {
+        bg_color1 = NORMAL_DIGIT_BG1;
+        bg_color2 = NORMAL_DIGIT_BG2;
+    }
 
     int bottom = top + DIGIT_TILE_HEIGHT;
     int right = left + DIGIT_TILE_WIDTH;
 
-    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
-    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
+    setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
     drawFilledRect(left, top, right, bottom);
+
+    setcolor(RGB(bg_color2.r, bg_color2.g, bg_color2.b));
+    setfillstyle(1, RGB(bg_color2.r, bg_color2.g, bg_color2.b));
+    drawFilledRect(left, bottom + 1, right, bottom + TILE_SHADOW_HGT);
 
     char text[2];
     text[0] = (char)num + '0';
     text[1] = '\0';
 
     setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
-    setbkcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+    setbkcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
 
     settextstyle(COMPLEX_FONT, HORIZ_DIR, DIGIT_TEXT_SIZE);
     
@@ -63,16 +82,24 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
 }
 
 void drawHiddenDigit(int left, int top) {
+    RGB_color bg_color1, bg_color2;
+    bg_color1 = HIDDEN_DIGIT_BG1;
+    bg_color2 = HIDDEN_DIGIT_BG2;
+
     int bottom = top + DIGIT_TILE_HEIGHT;
     int right = left + DIGIT_TILE_WIDTH;
 
-    setcolor(RGB(_RED.r, _RED.g, _RED.b));
-    setfillstyle(1, RGB(_RED.r, _RED.g, _RED.b));
+    setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
+    setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
     drawFilledRect(left, top, right, bottom);
 
+    setcolor(RGB(bg_color2.r, bg_color2.g, bg_color2.b));
+    setfillstyle(1, RGB(bg_color2.r, bg_color2.g, bg_color2.b));
+    drawFilledRect(left, bottom + 1, right, bottom + TILE_SHADOW_HGT);
+
     setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
-    line(left, top, right, bottom);
-    line(right, top, left, bottom);
+    line(left + 1, top + 1, right - 1, bottom - 1);
+    line(right - 1, top + 1, left + 1, bottom - 1);
 }
 
 void drawPerm(int left, int top, permutation perm, bool greyed_out) {
