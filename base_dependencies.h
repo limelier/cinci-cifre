@@ -8,7 +8,7 @@ const int PERM_LEN = 5;
 struct permutation {
     unsigned short digit[PERM_LEN];
     bool digit_used[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    bool isValid = 0;
+    bool is_valid = 0;
 };
 
 struct result {
@@ -31,13 +31,13 @@ struct guesslist {
 struct game {
     permutation base_perm;
     guesslist list;
-    bool hasBeenWon = 0;
+    bool has_been_won = 0;
 };
 
 result comparePermutations(permutation target, permutation compared) {
     result comp_result;
 
-    if (target.isValid == false || compared.isValid == false)
+    if (target.is_valid == false || compared.is_valid == false)
         throw "Received invalid permutation(s), cannot compare.";
 
     for (int i = 0; i <= 9; i++) {

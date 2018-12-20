@@ -1,6 +1,10 @@
 #include "base_dependencies.h"
 #include <string.h>
 #include <iostream>
+#include <fstream>
+#include <string>
+
+ifstream fin("debug_in.txt");
 
 permutation inputPermutation() {
     permutation perm;
@@ -12,13 +16,13 @@ permutation inputPermutation() {
     }
     for (int i = 0; i < PERM_LEN; i++) {
         if (input[i] < '0' || input[i] > '9') {
-            perm.isValid = false;
+            perm.is_valid = false;
             throw "Input is not a set of digits.";
         }
         else {
             current_digit = (unsigned short)(input[i] - '0');
             if (perm.digit_used[current_digit] == true) {
-                perm.isValid = false;
+                perm.is_valid = false;
                 throw "Input has repeated digits.";
             }
             else {
@@ -27,12 +31,42 @@ permutation inputPermutation() {
             }
         }
     }
-    perm.isValid = true;
+    perm.is_valid = true;
+    return perm;
+}
+
+// i know this function hurts but this is a mostly deprecated header anyway so shrug
+permutation debugInputPermutation() {
+    permutation perm;
+    char input[5];
+    unsigned short current_digit;
+    fin >> input;
+    if (strlen(input) != 5) {
+        throw "Input string is the wrong length.";
+    }
+    for (int i = 0; i < PERM_LEN; i++) {
+        if (input[i] < '0' || input[i] > '9') {
+            perm.is_valid = false;
+            throw "Input is not a set of digits.";
+        }
+        else {
+            current_digit = (unsigned short)(input[i] - '0');
+            if (perm.digit_used[current_digit] == true) {
+                perm.is_valid = false;
+                throw "Input has repeated digits.";
+            }
+            else {
+                perm.digit_used[current_digit] = true;
+                perm.digit[i] = current_digit;
+            }
+        }
+    }
+    perm.is_valid = true;
     return perm;
 }
 
 void displayPermutation(permutation perm) {
-    if (perm.isValid == false)
+    if (perm.is_valid == false)
         throw "Received invalid permutation, cannot display.";
     for (int i = 0; i < PERM_LEN; i++)
         cout << perm.digit[i];
@@ -44,7 +78,7 @@ void debugDisplayPermutation(permutation perm) {
     for (int i = 0; i <= 9; i++) {
         cout << perm.digit_used[i];
     }
-    cout << "; " << perm.isValid << endl;
+    cout << "; " << perm.is_valid << endl;
 
 }
 

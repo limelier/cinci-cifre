@@ -8,8 +8,8 @@ int main() {
 
     initwindow(800,600);
 
-    permutation perm1 = inputPermutation(); // todo make file input
-    permutation perm2 = inputPermutation();
+    permutation perm1 = debugInputPermutation();
+    permutation perm2 = debugInputPermutation();
 
     drawPerm(200, 200, perm1, false);
     drawHiddenPerm(200, 300);
