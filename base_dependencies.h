@@ -20,6 +20,7 @@ struct guessnode {
     permutation perm;
     result res;
     guessnode *next = nullptr;
+    guessnode *prev = nullptr;
 };
 
 struct guesslist {
