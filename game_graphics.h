@@ -8,6 +8,7 @@ const int DIGIT_TILE_HEIGHT = 35;
 const int DIGIT_TILE_WIDTH = 25;
 const int TILE_SHADOW_HGT = 3;
 const int DIGIT_TEXT_SIZE = 4;
+const int GUESS_HEIGHT = 42;
 
 struct RGB_color {
     int r;
@@ -123,4 +124,15 @@ void drawGuess(int left, int top, permutation guess, result res, bool greyed_out
     drawPerm(left, top, guess, greyed_out);
     int result_offset = 5 * DIGIT_TILE_WIDTH + 20;
     drawResult(left + result_offset, top, res, greyed_out);
+}
+
+void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
+    guessnode *node = list.first;
+    int curr_top = top;
+
+    for (int i = 0; i < list.num; i++) {
+        drawGuess(left, curr_top, node->perm, node->res, greyed_out);
+        curr_top += GUESS_HEIGHT;
+        node = node->next;
+    }
 }

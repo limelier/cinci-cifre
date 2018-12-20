@@ -4,6 +4,7 @@
 using namespace std;
 
 const int PERM_LEN = 5;
+const int GUESSLIST_LEN = 10;
 
 struct permutation {
     unsigned short digit[PERM_LEN];
