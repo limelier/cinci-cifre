@@ -52,7 +52,6 @@ int main() {
     drawPerm(5, 5, perm1, false);
 
     for (int i = 0; i < 12; i++) {
-        cerr << "got to step" << i << endl;
         guessnode *node;
         node = new guessnode;
         node->perm = RandomPermutationGenerator();
@@ -61,7 +60,7 @@ int main() {
     }
 
     drawGuessList(5, 50, list, false);
-    
+
     getch();
     closegraph();
 

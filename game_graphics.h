@@ -9,7 +9,7 @@ const int DIGIT_TILE_WIDTH = 25;
 const int TILE_SHADOW_HGT = 3;
 const int DIGIT_TEXT_SIZE = 4;
 const int GUESS_HEIGHT = 42;
-
+const int DIGIT_CORNER_RADIUS = 3;
 struct RGB_color {
     int r;
     int g;
@@ -48,6 +48,20 @@ void drawFilledRect(int left, int top, int right, int bottom) {
     fillpoly(4, poly_points);
 }
 
+void drawFilledRoundedRect(int left, int top, int right, int bottom, int radius) {
+    int left_inner = left + radius;
+    int right_inner = right - radius;
+    int top_inner = top + radius;
+    int bottom_inner = bottom - radius;
+
+    drawFilledRect(left, top_inner, right, bottom_inner);
+    drawFilledRect(left_inner, top, right_inner, bottom);
+    fillellipse(left_inner, top_inner, radius, radius);
+    fillellipse(left_inner, bottom_inner, radius, radius);
+    fillellipse(right_inner, top_inner, radius, radius);
+    fillellipse(right_inner, bottom_inner, radius, radius);
+}
+
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
     RGB_color bg_color1, bg_color2;
     if (greyed_out == true) {
@@ -64,11 +78,7 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
 
     setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
     setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-    drawFilledRect(left, top, right, bottom);
-
-    setcolor(RGB(bg_color2.r, bg_color2.g, bg_color2.b));
-    setfillstyle(1, RGB(bg_color2.r, bg_color2.g, bg_color2.b));
-    drawFilledRect(left, bottom + 1, right, bottom + TILE_SHADOW_HGT);
+    drawFilledRoundedRect(left, top, right, bottom, DIGIT_CORNER_RADIUS);
 
     char text[2];
     text[0] = (char)num + '0';
@@ -92,11 +102,7 @@ void drawHiddenDigit(int left, int top) {
 
     setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
     setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-    drawFilledRect(left, top, right, bottom);
-
-    setcolor(RGB(bg_color2.r, bg_color2.g, bg_color2.b));
-    setfillstyle(1, RGB(bg_color2.r, bg_color2.g, bg_color2.b));
-    drawFilledRect(left, bottom + 1, right, bottom + TILE_SHADOW_HGT);
+    drawFilledRoundedRect(left, top, right, bottom, DIGIT_CORNER_RADIUS);
 
     setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
     line(left + 1, top + 1, right - 1, bottom - 1);
@@ -128,10 +134,15 @@ void drawGuess(int left, int top, permutation guess, result res, bool greyed_out
 
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
     guessnode *node = list.first;
-    int curr_top = top;
 
-    for (int i = 0; i < list.num; i++) {
-        drawGuess(left, curr_top, node->perm, node->res, greyed_out);
+    setcolor(RGB(_DK_RED.r, _DK_RED.g, _DK_RED.b));
+    setfillstyle(1, RGB(_DK_RED.r, _DK_RED.g, _DK_RED.b));
+    drawFilledRoundedRect(left, top, left + 500, top + 500, 11);
+
+    int curr_top = top + 5;
+
+    for (unsigned int i = 0; i < list.num; i++) {
+        drawGuess(left + 5 , curr_top, node->perm, node->res, greyed_out);
         curr_top += GUESS_HEIGHT;
         node = node->next;
     }
