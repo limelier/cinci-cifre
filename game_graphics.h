@@ -163,7 +163,7 @@ int guessListHeight(guesslist list) {
     return list.num * GUESS_HEIGHT;
 }
 
-void drawPanelHeader(int left, int top, guesslist list, bool greyed_out) {
+void drawPanelHeader(int left, int top , bool greyed_out) {
     int right = left + guessListWidth() + 2 * GUESSLIST_PADDING;
     int bottom = top + DIGIT_TILE_HEIGHT + 2 * HEADER_PADDING;
 
@@ -211,7 +211,7 @@ void drawGamePanel (int left, game_panel game) {
     setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
     drawFilledRect(left, 1, right, WINDOW_HEIGHT);
 
-    drawPanelHeader(left + GAMEPANEL_PADDING, HEADER_TOP, game.list, greyed_out);
+    drawPanelHeader(left + GAMEPANEL_PADDING, HEADER_TOP, greyed_out);
     int guesslist_top = HEADER_TOP + DIGIT_TILE_HEIGHT + 2 * HEADER_PADDING + GAMEPANEL_DIVIDER;
     drawGuessList(left + GAMEPANEL_PADDING, guesslist_top, game.list, greyed_out);
 }
