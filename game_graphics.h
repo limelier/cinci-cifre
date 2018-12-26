@@ -10,6 +10,11 @@ const int TILE_SHADOW_HGT = 3;
 const int DIGIT_TEXT_SIZE = 4;
 const int GUESS_HEIGHT = 42;
 const int DIGIT_CORNER_RADIUS = 3;
+const int PERM_DIGIT_SPACING = 1;
+const int GUESSLIST_PADDING = 5;
+const int RESULT_DIVIDER = 5;
+const int GUESS_DIVIDER = 10;
+
 struct RGB_color {
     int r;
     int g;
@@ -28,11 +33,10 @@ const RGB_color _BLACK {25, 25, 25};
 const RGB_color _GREY {100, 100, 100};
 
 #define GREYED_OUT_DIGIT_BG1 _BLUEGRAY
-#define GREYED_OUT_DIGIT_BG2 _DK_BLUEGRAY
 #define NORMAL_DIGIT_BG1 _BLUE
-#define NORMAL_DIGIT_BG2 _DK_BLUE
 #define HIDDEN_DIGIT_BG1 _RED
-#define HIDDEN_DIGIT_BG2 _DK_RED
+#define GREYED_BACKING _DK_BLUEGRAY
+#define NORMAL_BACKING _DK_BLUE
 
 // FUNCTIONS
 
@@ -48,6 +52,8 @@ void drawFilledRect(int left, int top, int right, int bottom) {
     fillpoly(4, poly_points);
 }
 
+
+// currently behaves oddly in corners. usage postponed.
 void drawFilledRoundedRect(int left, int top, int right, int bottom, int radius) {
     int left_inner = left + radius;
     int right_inner = right - radius;
@@ -63,14 +69,12 @@ void drawFilledRoundedRect(int left, int top, int right, int bottom, int radius)
 }
 
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
-    RGB_color bg_color1, bg_color2;
+    RGB_color bg_color1;
     if (greyed_out == true) {
         bg_color1 = GREYED_OUT_DIGIT_BG1;
-        bg_color2 = GREYED_OUT_DIGIT_BG2;
     }
     else {
         bg_color1 = NORMAL_DIGIT_BG1;
-        bg_color2 = NORMAL_DIGIT_BG2;
     }
 
     int bottom = top + DIGIT_TILE_HEIGHT;
@@ -78,7 +82,7 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
 
     setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
     setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-    drawFilledRoundedRect(left, top, right, bottom, DIGIT_CORNER_RADIUS);
+    drawFilledRect(left, top, right, bottom);
 
     char text[2];
     text[0] = (char)num + '0';
@@ -93,16 +97,15 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
 }
 
 void drawHiddenDigit(int left, int top) {
-    RGB_color bg_color1, bg_color2;
+    RGB_color bg_color1;
     bg_color1 = HIDDEN_DIGIT_BG1;
-    bg_color2 = HIDDEN_DIGIT_BG2;
 
     int bottom = top + DIGIT_TILE_HEIGHT;
     int right = left + DIGIT_TILE_WIDTH;
 
     setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
     setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-    drawFilledRoundedRect(left, top, right, bottom, DIGIT_CORNER_RADIUS);
+    drawFilledRect(left, top, right, bottom);
 
     setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
     line(left + 1, top + 1, right - 1, bottom - 1);
@@ -110,39 +113,66 @@ void drawHiddenDigit(int left, int top) {
 }
 
 void drawPerm(int left, int top, permutation perm, bool greyed_out) {
+    int crt_left = left;
     for (int i = 0; i < PERM_LEN; i++) {
-        drawDigit(left + (DIGIT_TILE_WIDTH + 2) * i, top, perm.digit[i], greyed_out);
+        // the 1 isn't a magic number it's just needed to avoid overlap i swear don't hurt me
+        crt_left = left + (DIGIT_TILE_WIDTH + 1 + PERM_DIGIT_SPACING) * i;
+        drawDigit(crt_left, top, perm.digit[i], greyed_out);
     }
 }
 
 void drawHiddenPerm(int left, int top) {
+    int crt_left = left;
     for (int i = 0; i < PERM_LEN; i++) {
-        drawHiddenDigit(left + (DIGIT_TILE_WIDTH + 2) * i, top);
+        crt_left = left + (DIGIT_TILE_WIDTH + 1 + PERM_DIGIT_SPACING) * i;
+        drawHiddenDigit(crt_left, top);
     }
 }
 
 void drawResult(int left, int top, result res, bool greyed_out) {
     drawDigit(left, top, res.fixed, greyed_out);
-    drawDigit(left + DIGIT_TILE_WIDTH + 6, top, res.moved, greyed_out);
+    drawDigit(left + DIGIT_TILE_WIDTH + 1 + RESULT_DIVIDER, top, res.moved, greyed_out);
 }
 
 void drawGuess(int left, int top, permutation guess, result res, bool greyed_out) {
     drawPerm(left, top, guess, greyed_out);
-    int result_offset = 5 * DIGIT_TILE_WIDTH + 20;
+    int result_offset = PERM_LEN * (DIGIT_TILE_WIDTH + PERM_DIGIT_SPACING) + GUESS_DIVIDER;
     drawResult(left + result_offset, top, res, greyed_out);
+}
+
+int guessListWidth() {
+    // there are 2 result values. always.
+    int guesslist_width = 0;
+    guesslist_width += PERM_LEN * (DIGIT_TILE_WIDTH + PERM_DIGIT_SPACING);
+    guesslist_width += GUESS_DIVIDER;
+    guesslist_width += 2 * DIGIT_TILE_WIDTH;
+    guesslist_width += RESULT_DIVIDER;
+    return guesslist_width;
+}
+
+int guessListHeight(guesslist list) {
+    return list.num * (GUESSLIST_PADDING + DIGIT_TILE_HEIGHT);
 }
 
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
     guessnode *node = list.first;
 
-    setcolor(RGB(_DK_RED.r, _DK_RED.g, _DK_RED.b));
-    setfillstyle(1, RGB(_DK_RED.r, _DK_RED.g, _DK_RED.b));
-    drawFilledRoundedRect(left, top, left + 500, top + 500, 11);
+    int right = left + guessListWidth() + 2 * GUESSLIST_PADDING;
+    int bottom = top + guessListHeight(list) + GUESSLIST_PADDING;
+    cerr << list.num;
 
-    int curr_top = top + 5;
+    RGB_color bg_color;
+    if (greyed_out == true) 
+        bg_color = GREYED_BACKING;
+    else bg_color = NORMAL_BACKING;
+    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    drawFilledRect(left, top, right, bottom);
+
+    int curr_top = top + GUESSLIST_PADDING;
 
     for (unsigned int i = 0; i < list.num; i++) {
-        drawGuess(left + 5 , curr_top, node->perm, node->res, greyed_out);
+        drawGuess(left + GUESSLIST_PADDING , curr_top, node->perm, node->res, greyed_out);
         curr_top += GUESS_HEIGHT;
         node = node->next;
     }
