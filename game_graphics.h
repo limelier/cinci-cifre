@@ -15,8 +15,8 @@ const int GUESS_HEIGHT = 42;
 const int DIGIT_CORNER_RADIUS = 3;
 const int PERM_DIGIT_SPACING = 1;
 const int GUESSLIST_PADDING = 5;
-const int RESULT_DIVIDER = 5;
-const int GUESS_DIVIDER = 10;
+const int RESULT_DIGIT_MARGIN = 20;
+const int GUESS_DIVIDER = 30;
 const int HEADER_PADDING = 5;
 const int GAMEPANEL_PADDING = 10;
 const int HEADER_TOP = 50;
@@ -139,8 +139,8 @@ void drawHiddenPerm(int left, int top) {
 }
 
 void drawResult(int left, int top, result res, bool greyed_out) {
-    drawDigit(left, top, res.fixed, greyed_out);
-    drawDigit(left + DIGIT_TILE_WIDTH + 1 + RESULT_DIVIDER, top, res.moved, greyed_out);
+    drawDigit(left + RESULT_DIGIT_MARGIN, top, res.fixed, greyed_out);
+    drawDigit(left + DIGIT_TILE_WIDTH + 1 + 3 * RESULT_DIGIT_MARGIN, top, res.moved, greyed_out);
 }
 
 void drawGuess(int left, int top, permutation guess, result res, bool greyed_out) {
@@ -155,7 +155,7 @@ int guessListWidth() {
     guesslist_width += PERM_LEN * (DIGIT_TILE_WIDTH + PERM_DIGIT_SPACING);
     guesslist_width += GUESS_DIVIDER;
     guesslist_width += 2 * DIGIT_TILE_WIDTH;
-    guesslist_width += RESULT_DIVIDER;
+    guesslist_width += 4 * RESULT_DIGIT_MARGIN;
     return guesslist_width;
 }
 
@@ -174,6 +174,8 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
     setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
     setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
     drawFilledRect(left, top, right, bottom);
+
+    drawHiddenPerm(left + GUESSLIST_PADDING, top + HEADER_PADDING);
 }
 
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {

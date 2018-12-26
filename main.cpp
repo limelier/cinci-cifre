@@ -58,7 +58,7 @@ int main() {
         guesslistPush(game.list, node);
     }
 
-    game.active = 0;
+    game.active = 1;
     drawGamePanel(20, game);
 
     getch();
