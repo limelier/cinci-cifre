@@ -151,7 +151,7 @@ int guessListWidth() {
 }
 
 int guessListHeight(guesslist list) {
-    return list.num * (GUESSLIST_PADDING + DIGIT_TILE_HEIGHT);
+    return list.num * GUESS_HEIGHT;
 }
 
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
@@ -159,7 +159,6 @@ void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
 
     int right = left + guessListWidth() + 2 * GUESSLIST_PADDING;
     int bottom = top + guessListHeight(list) + GUESSLIST_PADDING;
-    cerr << list.num;
 
     RGB_color bg_color;
     if (greyed_out == true) 
