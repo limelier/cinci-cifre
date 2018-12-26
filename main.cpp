@@ -46,20 +46,20 @@ int main() {
     srand(time(NULL));
     initwindow(800,600);
 
-    permutation perm1 = RandomPermutationGenerator();
-    guesslist list;
 
-    drawPerm(5, 5, perm1, false);
+    game_panel game;
+    game.base_perm = RandomPermutationGenerator();
 
     for (int i = 0; i < 12; i++) {
         guessnode *node;
         node = new guessnode;
         node->perm = RandomPermutationGenerator();
-        node->res = comparePermutations(perm1, node->perm);
-        guesslistPush(list, node);
+        node->res = comparePermutations(game.base_perm, node->perm);
+        guesslistPush(game.list, node);
     }
 
-    drawGuessList(5, 50, list, false);
+    game.active = 0;
+    drawGamePanel(20, game);
 
     getch();
     closegraph();

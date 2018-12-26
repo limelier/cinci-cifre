@@ -4,6 +4,9 @@
 
 // CONSTANTS
 
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+
 const int DIGIT_TILE_HEIGHT = 35;
 const int DIGIT_TILE_WIDTH = 25;
 const int TILE_SHADOW_HGT = 3;
@@ -14,6 +17,10 @@ const int PERM_DIGIT_SPACING = 1;
 const int GUESSLIST_PADDING = 5;
 const int RESULT_DIVIDER = 5;
 const int GUESS_DIVIDER = 10;
+const int HEADER_PADDING = 5;
+const int GAMEPANEL_PADDING = 10;
+const int HEADER_TOP = 50;
+const int GAMEPANEL_DIVIDER = 10;
 
 struct RGB_color {
     int r;
@@ -37,6 +44,8 @@ const RGB_color _GREY {100, 100, 100};
 #define HIDDEN_DIGIT_BG1 _RED
 #define GREYED_BACKING _DK_BLUEGRAY
 #define NORMAL_BACKING _DK_BLUE
+#define GREYED_BACKGROUND _BLUEGRAY
+#define NORMAL_BACKGROUND _BLUE
 
 // FUNCTIONS
 
@@ -154,6 +163,19 @@ int guessListHeight(guesslist list) {
     return list.num * GUESS_HEIGHT;
 }
 
+void drawPanelHeader(int left, int top, guesslist list, bool greyed_out) {
+    int right = left + guessListWidth() + 2 * GUESSLIST_PADDING;
+    int bottom = top + DIGIT_TILE_HEIGHT + 2 * HEADER_PADDING;
+
+    RGB_color bg_color;
+    if (greyed_out == true) 
+        bg_color = GREYED_BACKING;
+    else bg_color = NORMAL_BACKING;
+    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    drawFilledRect(left, top, right, bottom);
+}
+
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
     guessnode *node = list.first;
 
@@ -176,3 +198,21 @@ void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
         node = node->next;
     }
 }
+
+void drawGamePanel (int left, game_panel game) {
+    bool greyed_out = !game.active;
+
+    int right = left + guessListWidth() + 2 * GUESSLIST_PADDING + 2 * GAMEPANEL_PADDING;
+    RGB_color bg_color;
+    if (greyed_out == true) 
+        bg_color = GREYED_BACKGROUND;
+    else bg_color = NORMAL_BACKGROUND;
+    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    drawFilledRect(left, 1, right, WINDOW_HEIGHT);
+
+    drawPanelHeader(left + GAMEPANEL_PADDING, HEADER_TOP, game.list, greyed_out);
+    int guesslist_top = HEADER_TOP + DIGIT_TILE_HEIGHT + 2 * HEADER_PADDING + GAMEPANEL_DIVIDER;
+    drawGuessList(left + GAMEPANEL_PADDING, guesslist_top, game.list, greyed_out);
+}
+

@@ -30,9 +30,10 @@ struct guesslist {
     unsigned int num = 0;
 };
 
-struct game {
+struct game_panel {
     permutation base_perm;
     guesslist list;
+    bool active = 1;
     bool has_been_won = 0;
 };
 
