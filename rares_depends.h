@@ -6,7 +6,7 @@ permutation RandomPermutationGenerator()
 {
     permutation p;
     int CurrentDigit;
-    int firstDigit = rand() % 9+1;
+    int firstDigit = rand() % 10;
     p.digit_used[firstDigit]++;
     p.digit[0]=firstDigit;
     // cout<<"First digit is "<<firstDigit<<endl;
