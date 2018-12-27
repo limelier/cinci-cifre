@@ -40,10 +40,11 @@ guessnode *makeGuess (permutation base_perm, permutation perm) {
 }
 
 void SPGameLoop() {
-    
-    // game initialization
     game_panel game;
+
+    // after these instructions, base_perm has the base permutation in it
     game.base_perm = RandomPermutationGenerator();
+    ///
 
     permutation input;
     while (game.has_been_won == false) {
@@ -52,15 +53,17 @@ void SPGameLoop() {
 
         drawGamePanel(300, game);
 
-        // todo: on-screen input
+        // after these instructions, input has the guess in it
         input = inputPermutation();
+        ///
 
-        // todo: guesslist scrolling the other way
         guesslistPush(game.list, makeGuess(game.base_perm, input));
 
         // todo: being able to win
     }
 }
+
+
 
 // todo: reverse-singleplayer, AI proof of concept
 
