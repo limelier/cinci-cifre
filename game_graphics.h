@@ -216,7 +216,6 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
 }
 
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
-    guessnode *node = list.first;
 
     int right = left + guessListWidth() + 2 * GUESSLIST_PADDING;
     int bottom = top + guessListHeight(list) + GUESSLIST_PADDING;
@@ -231,10 +230,11 @@ void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
 
     int curr_top = top + GUESSLIST_PADDING;
 
+    guessnode *node = list.last;
     for (unsigned int i = 0; i < list.num; i++) {
         drawGuess(left + GUESSLIST_PADDING , curr_top, node->perm, node->res, greyed_out);
         curr_top += GUESS_HEIGHT;
-        node = node->next;
+        node = node->prev;
     }
 }
 
