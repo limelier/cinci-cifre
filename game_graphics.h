@@ -1,6 +1,7 @@
 #pragma once
 #include <winbgim.h>
 #include "base_dependencies.h"
+#include <string.h>
 
 // CONSTANTS
 
@@ -11,16 +12,20 @@ const int DIGIT_TILE_HEIGHT = 35;
 const int DIGIT_TILE_WIDTH = 25;
 const int TILE_SHADOW_HGT = 3;
 const int DIGIT_TEXT_SIZE = 4;
+const int LABEL_TEXT_SIZE = 2;
 const int GUESS_HEIGHT = 42;
 const int DIGIT_CORNER_RADIUS = 3;
 const int PERM_DIGIT_SPACING = 1;
 const int GUESSLIST_PADDING = 5;
-const int RESULT_DIGIT_MARGIN = 20;
-const int GUESS_DIVIDER = 30;
+const int RESULT_DIGIT_MARGIN = 25;
+const int GUESS_DIVIDER = 15;
 const int HEADER_PADDING = 5;
 const int GAMEPANEL_PADDING = 10;
 const int HEADER_TOP = 50;
 const int GAMEPANEL_DIVIDER = 10;
+
+const char LABEL1[] = "fixed";
+const char LABEL2[] = "moved";
 
 struct RGB_color {
     int r;
@@ -149,6 +154,23 @@ void drawGuess(int left, int top, permutation guess, result res, bool greyed_out
     drawResult(left + result_offset, top, res, greyed_out);
 }
 
+void drawLabel(int x, int y, char text[], bool greyed_out) {
+    // prints labels, centered on x and y
+    RGB_color bg_color1;
+    if (greyed_out == true) 
+        bg_color1 = GREYED_BACKING;
+    else 
+        bg_color1 = NORMAL_BACKING;
+
+    setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
+    setbkcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
+
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, LABEL_TEXT_SIZE);
+    x -= textwidth(text) / 2;
+    y -= textheight(text) / 2;
+    outtextxy(x, y, text);
+}
+
 int guessListWidth() {
     // there are 2 result values. always.
     int guesslist_width = 0;
@@ -176,6 +198,21 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
     drawFilledRect(left, top, right, bottom);
 
     drawHiddenPerm(left + GUESSLIST_PADDING, top + HEADER_PADDING);
+
+    // label printing zone!
+    int label_x = left, label_y = top;
+    label_x += GUESSLIST_PADDING + PERM_LEN * (DIGIT_TILE_WIDTH + PERM_DIGIT_SPACING);
+    label_x += GUESS_DIVIDER + RESULT_DIGIT_MARGIN + DIGIT_TILE_WIDTH / 2;
+    label_y += HEADER_PADDING + DIGIT_TILE_HEIGHT / 2;
+
+    char current_label[30];
+    
+    strcpy(current_label, LABEL1);
+    drawLabel(label_x, label_y, current_label, greyed_out);
+
+    label_x += 2 * RESULT_DIGIT_MARGIN + DIGIT_TILE_WIDTH;
+    strcpy(current_label, LABEL2);
+    drawLabel(label_x, label_y, current_label, greyed_out);
 }
 
 void drawGuessList(int left, int top, guesslist list, bool greyed_out) {

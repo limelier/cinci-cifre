@@ -42,11 +42,8 @@ permutation RandomPermutationGenerator()
     return p;
 }
 
-int main() {
+void testLoop() {
     srand(time(NULL));
-    initwindow(800,600);
-
-
     game_panel game;
     game.base_perm = RandomPermutationGenerator();
 
@@ -60,6 +57,14 @@ int main() {
 
     game.active = 1;
     drawGamePanel(20, game);
+}
+
+
+int main() {
+    initwindow(800,600);
+
+    // drawLabel(200, 200, "fixed", false);
+    testLoop();
 
     getch();
     closegraph();
