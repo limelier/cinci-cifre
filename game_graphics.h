@@ -3,7 +3,7 @@
 #include "base_dependencies.h"
 #include <string.h>
 
-// CONSTANTS
+// PARAMETERS
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
@@ -26,6 +26,9 @@ const int GAMEPANEL_DIVIDER = 10;
 
 const char LABEL1[] = "fixed";
 const char LABEL2[] = "moved";
+
+
+// COLORS
 
 struct RGB_color {
     int r;
@@ -52,7 +55,17 @@ const RGB_color _GREY {100, 100, 100};
 #define GREYED_BACKGROUND _BLUEGRAY
 #define NORMAL_BACKGROUND _BLUE
 
-// FUNCTIONS
+// BUTTONS
+
+struct button_graphics {
+    RGB_color bg = _WHITE;
+    RGB_color fg = _BLACK;
+    int fontsize;
+};
+
+void drawButton();
+
+// BASE FUNCTIONS
 
 void drawFilledRect(int left, int top, int right, int bottom) {
     int poly_points[8] = 
@@ -81,6 +94,8 @@ void drawFilledRoundedRect(int left, int top, int right, int bottom, int radius)
     fillellipse(right_inner, top_inner, radius, radius);
     fillellipse(right_inner, bottom_inner, radius, radius);
 }
+
+// GAME FUNCTIONS
 
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
     RGB_color bg_color1;

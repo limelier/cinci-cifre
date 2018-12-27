@@ -4,6 +4,17 @@
 // temporary
 #include "CLI_game.h"
 
+struct button {
+    int key = 0;
+
+    int left = 0;
+    int right = 0;
+    int top = 0;
+    int bottom = 0;
+
+    button_graphics graph;
+};
+
 void guesslistPop (guesslist &list) {
     list.num--;
 
@@ -37,6 +48,30 @@ guessnode *makeGuess (permutation base_perm, permutation perm) {
     node->perm = perm;
     node->res = comparePermutations(base_perm, perm);
     return node;
+}
+
+bool isButtonPressed (button btn); // todo
+
+permutation inputPermutation2() {
+    permutation input;
+    bool perm_complete = false;
+
+    // drawInputDialog();
+
+    while (perm_complete == false) {
+        // drawInputDialog();
+        // < look for key hits 0-9
+        // < look for button hits: enter, erase and clear
+        // << if enter: 
+        // <<< if complete:
+        // <<<< if correct: perm_complete = true, input the perm, then erase all characters
+        // <<<< if incorrect: display relevant error message
+        // <<< if incomplete: display relevant error message
+        // << if erase & not empty: erase one character
+        // << if clear & not empty: erase all characters
+    }
+
+    return input;
 }
 
 void SPGameLoop() {
