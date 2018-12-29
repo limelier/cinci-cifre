@@ -1,19 +1,11 @@
+#pragma once
+
 #include "base_dependencies.h"
 #include "rares_depends.h"
+#include "game_graphics.h"
 
 // temporary
 #include "CLI_game.h"
-
-struct button {
-    int key = 0;
-
-    int left = 0;
-    int right = 0;
-    int top = 0;
-    int bottom = 0;
-
-    button_graphics graph;
-};
 
 void guesslistPop (guesslist &list) {
     list.num--;
@@ -61,6 +53,7 @@ permutation inputPermutation2() {
     while (perm_complete == false) {
         // drawInputDialog();
         // < look for key hits 0-9
+        // << if pressed, and not complete, add character
         // < look for button hits: enter, erase and clear
         // << if enter: 
         // <<< if complete:

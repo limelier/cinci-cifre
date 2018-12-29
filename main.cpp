@@ -1,5 +1,4 @@
 #include <iostream>
-#include "game_graphics.h"
 #include "graphical_game.h"
 using namespace std;
 
@@ -24,8 +23,16 @@ using namespace std;
 int main() {
     initwindow(800,600);
 
-    // drawLabel(200, 200, "fixed", false);
-    SPGameLoop();
+    // SPGameLoop();
+
+    button btn;
+    btn.left = 100;
+    btn.right = 300;
+    btn.top = 100;
+    btn.bottom = 200;
+
+    while(true)
+        drawButton(btn);
 
     getch();
     closegraph();

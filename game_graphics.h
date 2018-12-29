@@ -1,6 +1,7 @@
 #pragma once
 #include <winbgim.h>
 #include "base_dependencies.h"
+#include "graphical_game.h"
 #include <string.h>
 
 // PARAMETERS
@@ -55,16 +56,6 @@ const RGB_color _GREY {100, 100, 100};
 #define GREYED_BACKGROUND _BLUEGRAY
 #define NORMAL_BACKGROUND _BLUE
 
-// BUTTONS
-
-struct button_graphics {
-    RGB_color bg = _WHITE;
-    RGB_color fg = _BLACK;
-    int fontsize;
-};
-
-void drawButton();
-
 // BASE FUNCTIONS
 
 void drawFilledRect(int left, int top, int right, int bottom) {
@@ -93,6 +84,70 @@ void drawFilledRoundedRect(int left, int top, int right, int bottom, int radius)
     fillellipse(left_inner, bottom_inner, radius, radius);
     fillellipse(right_inner, top_inner, radius, radius);
     fillellipse(right_inner, bottom_inner, radius, radius);
+}
+
+void drawCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int text_size) {
+    setcolor(RGB(fg.r, fg.g, fg.b));
+    setbkcolor(RGB(bg.r, bg.g, bg.b));
+
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, text_size);
+    x -= textwidth(text) / 2;
+    y -= textheight(text) / 2;
+    outtextxy(x, y, text);
+}
+
+// BUTTONS
+
+struct button_graphics {
+    RGB_color bg = _WHITE;
+    RGB_color bg_hover = _BLACK;
+    RGB_color fg = _BLACK;
+    RGB_color fg_hover = _WHITE;
+    char text[100] = "untitled button";
+    int fontsize = 2;
+};
+
+struct button {
+    int key = 0;
+
+    int left = 0;
+    int right = 0;
+    int top = 0;
+    int bottom = 0;
+
+    bool hover = false;
+
+    button_graphics graph;
+};
+
+void updateButtonHover(button &btn) {
+    if (mousex() >= btn.left &&
+        mousex() <= btn.right &&
+        mousey() >= btn.top &&
+        mousey() <= btn.bottom)
+        btn.hover = true;
+    else
+        btn.hover = false;
+}
+
+void drawButton(button btn) {
+    updateButtonHover(btn);
+
+    RGB_color bg_color = btn.hover ? btn.graph.bg_hover : btn.graph.bg;
+    RGB_color fg_color = btn.hover ? btn.graph.fg_hover : btn.graph.fg;
+
+    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    drawFilledRect(btn.left, btn.top, btn.right, btn.bottom);
+
+    setcolor(RGB(fg_color.r, fg_color.g, fg_color.b));
+    setbkcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, btn.graph.fontsize);
+    
+    int center_x = (btn.left + btn.right) / 2;
+    int center_y = (btn.top + btn.bottom) / 2;
+    drawCenteredText(center_x, center_y, btn.graph.text, fg_color, bg_color, btn.graph.fontsize);
 }
 
 // GAME FUNCTIONS
@@ -177,13 +232,7 @@ void drawLabel(int x, int y, char text[], bool greyed_out) {
     else 
         bg_color1 = NORMAL_BACKING;
 
-    setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
-    setbkcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-
-    settextstyle(COMPLEX_FONT, HORIZ_DIR, LABEL_TEXT_SIZE);
-    x -= textwidth(text) / 2;
-    y -= textheight(text) / 2;
-    outtextxy(x, y, text);
+    drawCenteredText(x, y, text, _BLACK, bg_color1, LABEL_TEXT_SIZE);
 }
 
 int guessListWidth() {
