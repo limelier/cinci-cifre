@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 #include "graphical_game.h"
 using namespace std;
 
@@ -31,8 +32,10 @@ int main() {
     btn.top = 100;
     btn.bottom = 200;
 
-    while(true)
-        drawButton(btn);
+    drawButton(btn);
+    while(true) {
+        buttonLoopStep(btn);
+    }
 
     getch();
     closegraph();

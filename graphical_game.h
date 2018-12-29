@@ -42,7 +42,23 @@ guessnode *makeGuess (permutation base_perm, permutation perm) {
     return node;
 }
 
-bool isButtonPressed (button btn); // todo
+void buttonLoopStep(button &btn) {
+    bool hover;
+
+    if (mousex() >= btn.left &&
+        mousex() <= btn.right &&
+        mousey() >= btn.top &&
+        mousey() <= btn.bottom)
+        hover = true;
+    else
+        hover = false;
+
+    if (hover != btn.hover) {
+        btn.hover = hover;
+        drawButton(btn);
+    }
+}
+
 
 permutation inputPermutation2() {
     permutation input;

@@ -120,19 +120,8 @@ struct button {
     button_graphics graph;
 };
 
-void updateButtonHover(button &btn) {
-    if (mousex() >= btn.left &&
-        mousex() <= btn.right &&
-        mousey() >= btn.top &&
-        mousey() <= btn.bottom)
-        btn.hover = true;
-    else
-        btn.hover = false;
-}
 
 void drawButton(button btn) {
-    updateButtonHover(btn);
-
     RGB_color bg_color = btn.hover ? btn.graph.bg_hover : btn.graph.bg;
     RGB_color fg_color = btn.hover ? btn.graph.fg_hover : btn.graph.fg;
 
@@ -142,9 +131,7 @@ void drawButton(button btn) {
 
     setcolor(RGB(fg_color.r, fg_color.g, fg_color.b));
     setbkcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
-
     settextstyle(COMPLEX_FONT, HORIZ_DIR, btn.graph.fontsize);
-    
     int center_x = (btn.left + btn.right) / 2;
     int center_y = (btn.top + btn.bottom) / 2;
     drawCenteredText(center_x, center_y, btn.graph.text, fg_color, bg_color, btn.graph.fontsize);
