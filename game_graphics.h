@@ -56,6 +56,18 @@ const RGB_color _GREY {100, 100, 100};
 #define GREYED_BACKGROUND _BLUEGRAY
 #define NORMAL_BACKGROUND _BLUE
 
+void setcolorRGB(RGB_color color) {
+    setcolor(RGB(color.r, color.g, color.b));
+}
+
+void setbkcolorRGB(RGB_color color) {
+    setbkcolor(RGB(color.r, color.g, color.b));
+}
+
+void setfillstyleFlatRGB(RGB_color color) {
+    setfillstyle(1, RGB(color.r, color.g, color.b));
+}
+
 // BASE FUNCTIONS
 
 void drawFilledRect(int left, int top, int right, int bottom) {
@@ -125,12 +137,12 @@ void drawButton(button btn) {
     RGB_color bg_color = btn.hover ? btn.graph.bg_hover : btn.graph.bg;
     RGB_color fg_color = btn.hover ? btn.graph.fg_hover : btn.graph.fg;
 
-    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
-    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    setcolorRGB(bg_color);
+    setfillstyleFlatRGB(bg_color);
     drawFilledRect(btn.left, btn.top, btn.right, btn.bottom);
 
-    setcolor(RGB(fg_color.r, fg_color.g, fg_color.b));
-    setbkcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
+    setcolorRGB(fg_color);
+    setbkcolorRGB(bg_color);
     settextstyle(COMPLEX_FONT, HORIZ_DIR, btn.graph.fontsize);
     int center_x = (btn.left + btn.right) / 2;
     int center_y = (btn.top + btn.bottom) / 2;
@@ -140,27 +152,27 @@ void drawButton(button btn) {
 // GAME FUNCTIONS
 
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
-    RGB_color bg_color1;
+    RGB_color bg_color;
     if (greyed_out == true) {
-        bg_color1 = GREYED_OUT_DIGIT_BG1;
+        bg_color = GREYED_OUT_DIGIT_BG1;
     }
     else {
-        bg_color1 = NORMAL_DIGIT_BG1;
+        bg_color = NORMAL_DIGIT_BG1;
     }
 
     int bottom = top + DIGIT_TILE_HEIGHT;
     int right = left + DIGIT_TILE_WIDTH;
 
-    setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-    setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
+    setcolorRGB(bg_color);
+    setfillstyleFlatRGB(bg_color);
     drawFilledRect(left, top, right, bottom);
 
     char text[2];
     text[0] = (char)num + '0';
     text[1] = '\0';
 
-    setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
-    setbkcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
+    setcolorRGB(_BLACK);
+    setbkcolorRGB(bg_color);
 
     settextstyle(COMPLEX_FONT, HORIZ_DIR, DIGIT_TEXT_SIZE);
     
@@ -168,17 +180,17 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
 }
 
 void drawHiddenDigit(int left, int top) {
-    RGB_color bg_color1;
-    bg_color1 = HIDDEN_DIGIT_BG1;
+    RGB_color bg_color;
+    bg_color = HIDDEN_DIGIT_BG1;
 
     int bottom = top + DIGIT_TILE_HEIGHT;
     int right = left + DIGIT_TILE_WIDTH;
 
-    setcolor(RGB(bg_color1.r, bg_color1.g, bg_color1.b));
-    setfillstyle(1, RGB(bg_color1.r, bg_color1.g, bg_color1.b));
+    setcolorRGB(bg_color);
+    setfillstyleFlatRGB(bg_color);
     drawFilledRect(left, top, right, bottom);
 
-    setcolor(RGB(_BLACK.r, _BLACK.g, _BLACK.b));
+    setcolorRGB(_BLACK);
     line(left + 1, top + 1, right - 1, bottom - 1);
     line(right - 1, top + 1, left + 1, bottom - 1);
 }
@@ -213,13 +225,13 @@ void drawGuess(int left, int top, permutation guess, result res, bool greyed_out
 
 void drawLabel(int x, int y, char text[], bool greyed_out) {
     // prints labels, centered on x and y
-    RGB_color bg_color1;
+    RGB_color bg_color;
     if (greyed_out == true) 
-        bg_color1 = GREYED_BACKING;
+        bg_color = GREYED_BACKING;
     else 
-        bg_color1 = NORMAL_BACKING;
+        bg_color = NORMAL_BACKING;
 
-    drawCenteredText(x, y, text, _BLACK, bg_color1, LABEL_TEXT_SIZE);
+    drawCenteredText(x, y, text, _BLACK, bg_color, LABEL_TEXT_SIZE);
 }
 
 int guessListWidth() {
@@ -244,8 +256,8 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
     if (greyed_out == true) 
         bg_color = GREYED_BACKING;
     else bg_color = NORMAL_BACKING;
-    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
-    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    setcolorRGB(bg_color);
+    setfillstyleFlatRGB(bg_color);
     drawFilledRect(left, top, right, bottom);
 
     drawHiddenPerm(left + GUESSLIST_PADDING, top + HEADER_PADDING);
@@ -275,8 +287,8 @@ void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
     if (greyed_out == true) 
         bg_color = GREYED_BACKING;
     else bg_color = NORMAL_BACKING;
-    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
-    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    setcolorRGB(bg_color);
+    setfillstyleFlatRGB(bg_color);
     drawFilledRect(left, top, right, bottom);
 
     int curr_top = top + GUESSLIST_PADDING;
@@ -297,8 +309,8 @@ void drawGamePanel (int left, game_panel game) {
     if (greyed_out == true) 
         bg_color = GREYED_BACKGROUND;
     else bg_color = NORMAL_BACKGROUND;
-    setcolor(RGB(bg_color.r, bg_color.g, bg_color.b));
-    setfillstyle(1, RGB(bg_color.r, bg_color.g, bg_color.b));
+    setcolorRGB(bg_color);
+    setfillstyleFlatRGB(bg_color);
     drawFilledRect(left, 1, right, WINDOW_HEIGHT);
 
     drawPanelHeader(left + GAMEPANEL_PADDING, HEADER_TOP, greyed_out);
