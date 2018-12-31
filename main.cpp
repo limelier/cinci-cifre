@@ -24,7 +24,7 @@ using namespace std;
 int main() {
     initwindow(800,600);
 
-    // SPGameLoop();
+    SPGameLoop();
 
     button btn;
     btn.left = 100;
