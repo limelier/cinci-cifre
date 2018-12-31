@@ -7,7 +7,7 @@ const int PERM_LEN = 5;
 const int GUESSLIST_LEN = 10;
 
 struct permutation {
-    unsigned short digit[PERM_LEN];
+    unsigned short digit[PERM_LEN] = {0, 0, 0, 0, 0};
     bool digit_used[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     bool is_valid = 0;
 };

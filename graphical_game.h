@@ -435,6 +435,29 @@ void drawInputStack(stack <int> input_stack) {
     outtextxy(left + 20, top + 2, text);
 }
 
+permutation permFromStack(stack <int> s) {
+    permutation perm;
+    int digit = 0;
+
+    if (s.size() != PERM_LEN) {
+        throw "Stack isn't the right height.";
+        perm.is_valid = false;
+    }
+
+    perm.is_valid = true;
+    for (int i = 4; i >= 0; i--) {
+        digit = s.top();
+        s.pop();
+        perm.digit[i] = digit;
+        if (perm.digit_used[digit] == true)
+            perm.is_valid = false;
+        else    
+            perm.digit_used[digit] = true;
+    }
+
+    return perm;
+}
+
 permutation inputPermutation2() {
     permutation input;
     bool perm_complete = false;
@@ -516,6 +539,17 @@ permutation inputPermutation2() {
                     input_stack.pop();
                 input_stack_changed = true;
             }
+            else if (btn_enter.hover && input_stack.size() == PERM_LEN) {
+                input = permFromStack(input_stack);
+                if (input.is_valid == true) 
+                    perm_complete = true;
+                else {
+                    while (!input_stack.empty())
+                        input_stack.pop();
+                    input_stack_changed = true;
+                }
+                    
+            }
             clearmouseclick(WM_LBUTTONDOWN);
         }
         // << if enter: 
@@ -545,7 +579,7 @@ void SPGameLoop() {
         drawGamePanel(300, game);
 
         // after these instructions, input has the guess in it
-        input = inputPermutation();
+        input = inputPermutation2();
         ///
 
         guesslistPush(game.list, makeGuess(game.base_perm, input));
