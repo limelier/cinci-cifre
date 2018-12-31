@@ -505,6 +505,19 @@ permutation inputPermutation2() {
                 }
         }
         // < look for button hits: enter, erase and clear
+        if (ismouseclick(WM_LBUTTONDOWN)) {
+            if (btn_C.hover && !input_stack.empty()) {
+                input_stack.pop();
+                input_stack_changed = true;
+
+            }
+            else if (btn_CE.hover && !input_stack.empty()) {
+                while (!input_stack.empty())
+                    input_stack.pop();
+                input_stack_changed = true;
+            }
+            clearmouseclick(WM_LBUTTONDOWN);
+        }
         // << if enter: 
         // <<< if complete:
         // <<<< if correct: perm_complete = true, input the perm, then erase all characters
