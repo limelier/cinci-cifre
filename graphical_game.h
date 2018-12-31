@@ -485,12 +485,25 @@ permutation inputPermutation2() {
     drawButton(btn_C);
     drawButton(btn_CE);
 
+    bool input_stack_changed = false;
     while (perm_complete == false) {
+        if (input_stack_changed) {
+            drawInputNumpanel();
+            drawInputStack(input_stack);
+            input_stack_changed = false;
+        }
         buttonLoopStep(btn_enter);
         buttonLoopStep(btn_CE);
         buttonLoopStep(btn_C);
-        // < look for key hits 0-9
-        // << if pressed, and not complete, add character
+
+        if (kbhit()) {
+            char key = getch();
+            if (key >= '0' && key <= '9')
+                if (input_stack.size() < PERM_LEN) {
+                    input_stack.push(key - '0');
+                    input_stack_changed = true;
+                }
+        }
         // < look for button hits: enter, erase and clear
         // << if enter: 
         // <<< if complete:
