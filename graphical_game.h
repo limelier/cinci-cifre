@@ -49,6 +49,23 @@ const int INP_NUMPANEL_FONTSIZE = 5;
 const char LABEL1[] = "fixed";
 const char LABEL2[] = "moved";
 
+const int INPUT_ERR_POPUP_FONTSIZE = 2;
+const int INPUT_ERR_POPUP_W = 300;
+const int INPUT_ERR_POPUP_H = 200;
+const char INPUT_ERR_POPUP[] = 
+    "A permutation is not allowed to contain the same/n"
+    "digit multiple times. Please try again./n"
+    "/n"
+    "Press any key to continue.";
+
+const int SP_WIN_POPUP_FONTSIZE = 4;
+const int SP_WIN_POPUP_W = 500;
+const int SP_WIN_POPUP_H = 300;
+const char SP_WIN_POPUP[] =
+    "Congratulations, you win!/n"
+    "Press any key to return to the menu.";
+
+
 
 // COLORS
 
@@ -461,6 +478,27 @@ permutation permFromStack(stack <int> s) {
     return perm;
 }
 
+void drawPopup (int width, int height, int fontsize, char text[]) { // todo: proper multi-line formatting
+    setcolorRGB(POPUP_BG);
+    setfillstyleFlatRGB(POPUP_BG);
+    int x = WINDOW_WIDTH / 2;
+    int y = WINDOW_HEIGHT / 2;
+    drawFilledRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
+    drawCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
+}
+
+void popup (int width, int height, int fontsize, char text[]) {
+    setactivepage(2);
+    setbkcolor(BLACK);
+    cleardevice();
+    drawPopup (width, height, fontsize, text);
+    setvisualpage(2);
+
+    getch();
+    setactivepage(1);
+    setvisualpage(1);
+}
+
 permutation inputPermutation2() {
     permutation input;
     bool perm_complete = false;
@@ -547,6 +585,9 @@ permutation inputPermutation2() {
                 if (input.is_valid == true) 
                     perm_complete = true;
                 else {
+                    char popup_text[200];
+                    strcpy(popup_text, INPUT_ERR_POPUP);
+                    popup(INPUT_ERR_POPUP_W, INPUT_ERR_POPUP_H, INPUT_ERR_POPUP_FONTSIZE, popup_text);
                     while (!input_stack.empty())
                         input_stack.pop();
                     input_stack_changed = true;
@@ -555,42 +596,22 @@ permutation inputPermutation2() {
             }
             clearmouseclick(WM_LBUTTONDOWN);
         }
-        // << if enter: 
-        // <<< if complete:
-        // <<<< if correct: perm_complete = true, input the perm, then erase all characters
-        // <<<< if incorrect: display relevant error message
-        // <<< if incomplete: display relevant error message
-        // << if erase & not empty: erase one character
-        // << if clear & not empty: erase all characters
     }
 
     return input;
 }
 
-void drawPopup (int width, int height, int fontsize, char text[]) {
-    setcolorRGB(POPUP_BG);
-    setfillstyleFlatRGB(POPUP_BG);
-    int x = WINDOW_WIDTH / 2;
-    int y = WINDOW_HEIGHT / 2;
-    drawFilledRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
-    drawCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
-}
-
-void popup (int width, int height, int fontsize, char text[]) {
-    // draw popup
-    setactivepage(2);
-    setbkcolor(BLACK);
-    cleardevice();
-    drawPopup (width, height, fontsize, text);
-    setvisualpage(2);
-
-    getch();
-    setactivepage(1);
-    setvisualpage(1);
+int gamePanelWidth() {
+    int width = 0;
+    width += guessListWidth();
+    width += 2 * GUESSLIST_PADDING;
+    width += 2 * GAMEPANEL_PADDING;
+    return width;
 }
 
 void SPGameLoop() {
     game_panel game;
+    int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
     // after these instructions, base_perm has the base permutation in it
     game.base_perm = RandomPermutationGenerator();
@@ -601,16 +622,20 @@ void SPGameLoop() {
         setbkcolor(BLACK);
         cleardevice();
 
-        drawGamePanel(300, game);
+        drawGamePanel(game_left, game);
 
-        // after these instructions, input has the guess in it
         input = inputPermutation2();
-        ///
 
         guesslistPush(game.list, makeGuess(game.base_perm, input));
 
-        // todo: being able to win
+        if (input.digit == game.base_perm.digit) // doesn't work, fix
+            game.has_been_won = true;
     }
+
+    char popup_text[200];
+    strcpy(popup_text, SP_WIN_POPUP);
+    popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
+    cleardevice();
 }
 
 
