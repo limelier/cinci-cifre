@@ -5,17 +5,10 @@ using namespace std;
 
 int main() {
     initwindow(800,600);
+    setactivepage(1);
+    setvisualpage(1);
 
     SPGameLoop();
-
-    // permutation perm;
-    // stack <int> s;
-    // s.push(1);
-    // s.push(2);
-    // s.push(3);
-    // s.push(4);
-    // s.push(5);
-    // perm = permFromStack(s);
 
     getch();
     closegraph();

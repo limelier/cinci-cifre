@@ -85,6 +85,9 @@ const RGB_color _GREY {100, 100, 100};
 #define INP_BUTTON_BG_HOVER _BLUE
 #define INP_BUTTON_FG_HOVER _BLACK
 
+#define POPUP_BG _RED
+#define POPUP_FG _BLACK
+
 void setcolorRGB(RGB_color color) {
     setcolor(RGB(color.r, color.g, color.b));
 }
@@ -562,6 +565,28 @@ permutation inputPermutation2() {
     }
 
     return input;
+}
+
+void drawPopup (int width, int height, int fontsize, char text[]) {
+    setcolorRGB(POPUP_BG);
+    setfillstyleFlatRGB(POPUP_BG);
+    int x = WINDOW_WIDTH / 2;
+    int y = WINDOW_HEIGHT / 2;
+    drawFilledRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
+    drawCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
+}
+
+void popup (int width, int height, int fontsize, char text[]) {
+    // draw popup
+    setactivepage(2);
+    setbkcolor(BLACK);
+    cleardevice();
+    drawPopup (width, height, fontsize, text);
+    setvisualpage(2);
+
+    getch();
+    setactivepage(1);
+    setvisualpage(1);
 }
 
 void SPGameLoop() {
