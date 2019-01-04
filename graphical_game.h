@@ -50,21 +50,22 @@ const char LABEL1[] = "fixed";
 const char LABEL2[] = "moved";
 
 const int INPUT_ERR_POPUP_FONTSIZE = 2;
-const int INPUT_ERR_POPUP_W = 300;
-const int INPUT_ERR_POPUP_H = 200;
+const int INPUT_ERR_POPUP_W = 550;
+const int INPUT_ERR_POPUP_H = 150;
 const char INPUT_ERR_POPUP[] = 
-    "A permutation is not allowed to contain the same/n"
-    "digit multiple times. Please try again./n"
-    "/n"
+    "A permutation is not allowed to contain the\n"
+    "same digit multiple times. Please try again.\n"
+    "\n"
     "Press any key to continue.";
 
 const int SP_WIN_POPUP_FONTSIZE = 4;
 const int SP_WIN_POPUP_W = 500;
 const int SP_WIN_POPUP_H = 300;
 const char SP_WIN_POPUP[] =
-    "Congratulations, you win!/n"
+    "Congratulations, you win!\n"
     "Press any key to return to the menu.";
 
+const int TEXT_LINE_SPACING = 2;
 
 
 // COLORS
@@ -478,13 +479,51 @@ permutation permFromStack(stack <int> s) {
     return perm;
 }
 
+void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int fontsize) {
+    char chunk[200];
+    int length = strlen(text);
+    int lines = 1;
+
+    for (int i = 0; i < length; i++) {
+        if (text[i] == '\n')
+            lines++;
+    }
+
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, fontsize);
+    int line_height = textheight(text); 
+    line_height += TEXT_LINE_SPACING;
+    
+    int line_y;
+    line_y = y - (lines / 2) * line_height;
+    if (lines % 2 == 0)
+        line_y += line_height / 2;
+    
+    int j = 0;
+    int i;
+    for (i = 0; i < length; i++) {
+        if (text[i] == '\n') {
+            strncpy(chunk, text + j, i - j);
+            chunk[i - j] = '\0';
+            drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
+            line_y += line_height;
+            j = i + 1;
+        }
+    }
+
+    strncpy(chunk, text + j, i - j);
+    chunk[i - j] = '\0';
+    drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
+    
+
+}
+
 void drawPopup (int width, int height, int fontsize, char text[]) { // todo: proper multi-line formatting
     setcolorRGB(POPUP_BG);
     setfillstyleFlatRGB(POPUP_BG);
     int x = WINDOW_WIDTH / 2;
     int y = WINDOW_HEIGHT / 2;
     drawFilledRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
-    drawCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
+    drawMultiCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
 }
 
 void popup (int width, int height, int fontsize, char text[]) {
