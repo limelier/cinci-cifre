@@ -59,8 +59,8 @@ const char INPUT_ERR_POPUP[] =
     "Press any key to continue.";
 
 const int SP_WIN_POPUP_FONTSIZE = 4;
-const int SP_WIN_POPUP_W = 500;
-const int SP_WIN_POPUP_H = 300;
+const int SP_WIN_POPUP_W = WINDOW_WIDTH;
+const int SP_WIN_POPUP_H = WINDOW_HEIGHT;
 const char SP_WIN_POPUP[] =
     "Congratulations, you win!\n"
     "Press any key to return to the menu.";
@@ -653,7 +653,7 @@ void SPGameLoop() {
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
     // after these instructions, base_perm has the base permutation in it
-    game.base_perm = RandomPermutationGenerator();
+    game.base_perm = inputPermutation2();
     ///
 
     permutation input;
@@ -667,7 +667,7 @@ void SPGameLoop() {
 
         guesslistPush(game.list, makeGuess(game.base_perm, input));
 
-        if (input.digit == game.base_perm.digit) // doesn't work, fix
+        if (game.list.first->res.fixed == 5) // doesn't work, fix
             game.has_been_won = true;
     }
 
