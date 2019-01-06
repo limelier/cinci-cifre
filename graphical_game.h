@@ -4,124 +4,17 @@
 #include "rares_depends.h"
 #include <string.h>
 #include <winbgim.h>
-#include <stack>
-
-// temporary
-#include "CLI_game.h"
+#include <stack> // needs to go.
 
 // PARAMETERS
-
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
-
-const int DIGIT_TILE_HEIGHT = 35;
-const int DIGIT_TILE_WIDTH = 25;
-const int TILE_SHADOW_HGT = 3;
-const int DIGIT_TEXT_SIZE = 4;
-const int LABEL_TEXT_SIZE = 2;
-const int GUESS_HEIGHT = 42;
-const int DIGIT_CORNER_RADIUS = 3;
-const int PERM_DIGIT_SPACING = 1;
-const int GUESSLIST_PADDING = 5;
-const int RESULT_DIGIT_MARGIN = 25;
-const int GUESS_DIVIDER = 15;
-const int HEADER_PADDING = 5;
-const int GAMEPANEL_PADDING = 10;
-const int HEADER_TOP = 10;
-const int GAMEPANEL_DIVIDER = 10;
-
-    // input dialog
-const int INP_BOX_HEIGHT = 80;
-const int INP_BOX_BOTTOM_MARGIN = 15;
-const int INP_BOX_BOTTOM = WINDOW_HEIGHT - INP_BOX_BOTTOM_MARGIN;
-const int INP_BOX_TOP = INP_BOX_BOTTOM - INP_BOX_HEIGHT;
-const int INP_BOX_HORIZ_PADDING = 50;
-const int INP_BOX_VERT_PADDING = 10;
-const int INP_BOX_SPACING = 10;
-const int CE_BTN_WIDTH = 50;
-const int C_BTN_WIDTH = 50;
-const int ENTER_BTN_WIDTH = 100;
-const int INP_BUTTON_FONTSIZE = 3;
-const int INP_NUMPANEL_FONTSIZE = 5;
-
-
-
-const char LABEL1[] = "fixed";
-const char LABEL2[] = "moved";
-
-const int INPUT_ERR_POPUP_FONTSIZE = 2;
-const int INPUT_ERR_POPUP_W = 550;
-const int INPUT_ERR_POPUP_H = 150;
-const char INPUT_ERR_POPUP[] = 
-    "A permutation is not allowed to contain the\n"
-    "same digit multiple times. Please try again.\n"
-    "\n"
-    "Press any key to continue.";
-
-const int SP_WIN_POPUP_FONTSIZE = 4;
-const int SP_WIN_POPUP_W = WINDOW_WIDTH;
-const int SP_WIN_POPUP_H = WINDOW_HEIGHT;
-const char SP_WIN_POPUP[] =
-    "Congratulations, you win!\n"
-    "Press any key to return to the menu.";
-
-const int TEXT_LINE_SPACING = 2;
-
-
+#include "game_consts.h"
 // COLORS
-
-struct RGB_color {
-    int r;
-    int g;
-    int b;
-};
-
-const RGB_color _BLUE {62, 165, 245};
-const RGB_color _DK_BLUE {21, 101, 192};
-const RGB_color _BLUEGRAY {120, 144, 156};
-const RGB_color _DK_BLUEGRAY {55, 71, 79};
-const RGB_color _RED {239, 83, 80};
-const RGB_color _DK_RED {183, 28, 28};
-
-const RGB_color _WHITE {225, 225, 225};
-const RGB_color _BLACK {25, 25, 25};
-const RGB_color _GREY {100, 100, 100};
-
-#define GREYED_OUT_DIGIT_BG1 _BLUEGRAY
-#define NORMAL_DIGIT_BG1 _BLUE
-#define HIDDEN_DIGIT_BG1 _RED
-#define GREYED_BACKING _DK_BLUEGRAY
-#define NORMAL_BACKING _DK_BLUE
-#define GREYED_BACKGROUND _BLUEGRAY
-#define NORMAL_BACKGROUND _BLUE
-
-#define INP_BACKING _DK_BLUEGRAY
-#define INP_NUMPANEL _BLACK
-#define INP_NUMPANEL_TEXT _WHITE
-#define INP_BUTTON_BG _BLUEGRAY
-#define INP_BUTTON_FG _BLACK
-#define INP_BUTTON_BG_HOVER _BLUE
-#define INP_BUTTON_FG_HOVER _BLACK
-
-#define POPUP_BG _RED
-#define POPUP_FG _BLACK
-
-void setcolorRGB(RGB_color color) {
-    setcolor(RGB(color.r, color.g, color.b));
-}
-
-void setbkcolorRGB(RGB_color color) {
-    setbkcolor(RGB(color.r, color.g, color.b));
-}
-
-void setfillstyleFlatRGB(RGB_color color) {
-    setfillstyle(1, RGB(color.r, color.g, color.b));
-}
+#include "colors.h"
 
 // BASIC DRAW FUNCTIONS
 
 void drawFilledRect(int left, int top, int right, int bottom) {
-    int poly_points[8] = 
+    int poly_points[8] =
     {
         left, top,
         right, top,
@@ -223,7 +116,7 @@ void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
     setbkcolorRGB(bg_color);
 
     settextstyle(COMPLEX_FONT, HORIZ_DIR, DIGIT_TEXT_SIZE);
-    
+
     outtextxy(left + 2, top + 2, text);
 }
 
@@ -274,9 +167,9 @@ void drawGuess(int left, int top, permutation guess, result res, bool greyed_out
 void drawLabel(int x, int y, char text[], bool greyed_out) {
     // prints labels, centered on x and y
     RGB_color bg_color;
-    if (greyed_out == true) 
+    if (greyed_out == true)
         bg_color = GREYED_BACKING;
-    else 
+    else
         bg_color = NORMAL_BACKING;
 
     drawCenteredText(x, y, text, _BLACK, bg_color, LABEL_TEXT_SIZE);
@@ -301,7 +194,7 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
     int bottom = top + DIGIT_TILE_HEIGHT + 2 * HEADER_PADDING;
 
     RGB_color bg_color;
-    if (greyed_out == true) 
+    if (greyed_out == true)
         bg_color = GREYED_BACKING;
     else bg_color = NORMAL_BACKING;
     setcolorRGB(bg_color);
@@ -317,7 +210,7 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
     label_y += HEADER_PADDING + DIGIT_TILE_HEIGHT / 2;
 
     char current_label[30];
-    
+
     strcpy(current_label, LABEL1);
     drawLabel(label_x, label_y, current_label, greyed_out);
 
@@ -332,7 +225,7 @@ void drawGuessList(int left, int top, guesslist list, bool greyed_out) {
     int bottom = top + guessListHeight(list) + GUESSLIST_PADDING;
 
     RGB_color bg_color;
-    if (greyed_out == true) 
+    if (greyed_out == true)
         bg_color = GREYED_BACKING;
     else bg_color = NORMAL_BACKING;
     setcolorRGB(bg_color);
@@ -354,7 +247,7 @@ void drawGamePanel (int left, game_panel game) {
 
     int right = left + guessListWidth() + 2 * GUESSLIST_PADDING + 2 * GAMEPANEL_PADDING;
     RGB_color bg_color;
-    if (greyed_out == true) 
+    if (greyed_out == true)
         bg_color = GREYED_BACKGROUND;
     else bg_color = NORMAL_BACKGROUND;
     setcolorRGB(bg_color);
@@ -379,7 +272,7 @@ void guesslistPop (guesslist &list) {
 void guesslistPush (guesslist &list, guessnode *node) {
     if (list.num == GUESSLIST_LEN)
         guesslistPop(list);
-    
+
     if (list.num == 0) {
         list.first = node;
         list.last = node;
@@ -472,7 +365,7 @@ permutation permFromStack(stack <int> s) {
         perm.digit[i] = digit;
         if (perm.digit_used[digit] == true)
             perm.is_valid = false;
-        else    
+        else
             perm.digit_used[digit] = true;
     }
 
@@ -490,14 +383,14 @@ void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg
     }
 
     settextstyle(COMPLEX_FONT, HORIZ_DIR, fontsize);
-    int line_height = textheight(text); 
+    int line_height = textheight(text);
     line_height += TEXT_LINE_SPACING;
-    
+
     int line_y;
     line_y = y - (lines / 2) * line_height;
     if (lines % 2 == 0)
         line_y += line_height / 2;
-    
+
     int j = 0;
     int i;
     for (i = 0; i < length; i++) {
@@ -513,7 +406,7 @@ void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg
     strncpy(chunk, text + j, i - j);
     chunk[i - j] = '\0';
     drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
-    
+
 
 }
 
@@ -598,7 +491,8 @@ permutation inputPermutation2() {
         buttonLoopStep(btn_enter);
         buttonLoopStep(btn_CE);
         buttonLoopStep(btn_C);
-
+        
+        // look for digit key hits
         if (kbhit()) {
             char key = getch();
             if (key >= '0' && key <= '9')
@@ -607,7 +501,7 @@ permutation inputPermutation2() {
                     input_stack_changed = true;
                 }
         }
-        // < look for button hits: enter, erase and clear
+        // look for button hits: enter, C and CE
         if (ismouseclick(WM_LBUTTONDOWN)) {
             if (btn_C.hover && !input_stack.empty()) {
                 input_stack.pop();
@@ -621,7 +515,7 @@ permutation inputPermutation2() {
             }
             else if (btn_enter.hover && input_stack.size() == PERM_LEN) {
                 input = permFromStack(input_stack);
-                if (input.is_valid == true) 
+                if (input.is_valid == true)
                     perm_complete = true;
                 else {
                     char popup_text[200];
@@ -631,7 +525,7 @@ permutation inputPermutation2() {
                         input_stack.pop();
                     input_stack_changed = true;
                 }
-                    
+
             }
             clearmouseclick(WM_LBUTTONDOWN);
         }
@@ -653,8 +547,8 @@ void SPGameLoop() {
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
     // after these instructions, base_perm has the base permutation in it
-    game.base_perm = inputPermutation2();
-    ///
+    // game.base_perm = inputPermutation2();
+    game.base_perm = RandomPermutationGenerator(); // BUGGED. CHOSEN PERMUTATION ALWAYS STARTS WITH 1.
 
     permutation input;
     while (game.has_been_won == false) {
@@ -681,4 +575,4 @@ void SPGameLoop() {
 
 // todo: reverse-singleplayer, AI proof of concept
 
-// todo: 2 player 
+// todo: 2 player

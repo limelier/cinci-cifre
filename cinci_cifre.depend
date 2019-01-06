@@ -4,3 +4,30 @@
 	<winbgim.h>
 	<stdlib.h>
 
+1546727699 source:c:\users\limelier\desktop\cinci-cifre\cinci-cifre\main.cpp
+	<iostream>
+	<stdlib.h>
+	"graphical_game.h"
+
+1546728064 c:\users\limelier\desktop\cinci-cifre\cinci-cifre\graphical_game.h
+	"base_dependencies.h"
+	"rares_depends.h"
+	<string.h>
+	<winbgim.h>
+	<stack>
+	"CLI_game.h"
+
+1546727699 c:\users\limelier\desktop\cinci-cifre\cinci-cifre\base_dependencies.h
+
+1546727699 c:\users\limelier\desktop\cinci-cifre\cinci-cifre\rares_depends.h
+	<ctime>
+	<stdlib.h>
+	"base_dependencies.h"
+
+1546727699 c:\users\limelier\desktop\cinci-cifre\cinci-cifre\cli_game.h
+	"base_dependencies.h"
+	<string.h>
+	<iostream>
+	<fstream>
+	<string>
+
