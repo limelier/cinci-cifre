@@ -12,8 +12,7 @@ int main() {
     srand(time(nullptr));
 
     game();
-    
-    getch();
+
     closegraph();
 
     return 0;

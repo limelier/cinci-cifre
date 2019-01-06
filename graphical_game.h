@@ -671,6 +671,10 @@ void game() {
                 playMenu();
                 menu_landing = true;
             }
+
+            if (btn_quit.hover) {
+                break;
+            }
         }
     }
 }
