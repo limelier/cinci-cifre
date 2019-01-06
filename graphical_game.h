@@ -421,7 +421,7 @@ void drawPopup (int width, int height, int fontsize, char text[]) { // todo: pro
 
 void popup (int width, int height, int fontsize, char text[]) {
     setactivepage(2);
-    setbkcolor(BLACK);
+    setbkcolorRGB(_BLACK);
     cleardevice();
     drawPopup (width, height, fontsize, text);
     setvisualpage(2);
@@ -618,7 +618,8 @@ void playMenu() {
     drawButton(btn_MP);
     drawButton(btn_AI);
 
-    while (true) {
+    bool game_selected = false;
+    while (!game_selected) {
         buttonLoopStep(btn_SP);
         buttonLoopStep(btn_SPP);
         buttonLoopStep(btn_MP);
@@ -628,30 +629,37 @@ void playMenu() {
             clearmouseclick(WM_LBUTTONDOWN);
             if (btn_SP.hover) {
                 SPGameLoop(false);
+                game_selected = true;
             }
             if (btn_SPP.hover) {
                 SPGameLoop(true);
+                game_selected = true;
             }
         }
     }
 }
 
 void game() {
-    setbkcolorRGB(MENU_BG);
-    cleardevice();
-    drawGameTitle();
-
     button btn_play = initMenuButton(0, BTN_PLAY);
     button btn_settings = initMenuButton(1, BTN_SETTINGS);
     button btn_help = initMenuButton(2, BTN_HELP);
     button btn_quit = initMenuButton(3, BTN_QUIT);
 
-    drawButton(btn_play);
-    drawButton(btn_settings);
-    drawButton(btn_help);
-    drawButton(btn_quit);
-
+    bool menu_landing = true;
     while (true) {
+        if (menu_landing) {
+            setbkcolorRGB(MENU_BG);
+            cleardevice();
+            drawGameTitle();
+
+            drawButton(btn_play);
+            drawButton(btn_settings);
+            drawButton(btn_help);
+            drawButton(btn_quit);    
+
+            menu_landing = false;
+        }
+        
         buttonLoopStep(btn_play);
         buttonLoopStep(btn_settings);
         buttonLoopStep(btn_help);
@@ -660,8 +668,8 @@ void game() {
         if (ismouseclick(WM_LBUTTONDOWN)) {
             clearmouseclick(WM_LBUTTONDOWN);
             if (btn_play.hover) {
-                
                 playMenu();
+                menu_landing = true;
             }
         }
     }
