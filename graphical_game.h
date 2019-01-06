@@ -548,7 +548,7 @@ void SPGameLoop() {
 
     // after these instructions, base_perm has the base permutation in it
     // game.base_perm = inputPermutation2();
-    game.base_perm = RandomPermutationGenerator(); // BUGGED. CHOSEN PERMUTATION ALWAYS STARTS WITH 1.
+    game.base_perm = RandomPermutationGenerator();
 
     permutation input;
     while (game.has_been_won == false) {
