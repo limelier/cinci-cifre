@@ -506,7 +506,6 @@ permutation inputPermutation2() {
             if (btn_C.hover && !input_stack.empty()) {
                 input_stack.pop();
                 input_stack_changed = true;
-
             }
             else if (btn_CE.hover && !input_stack.empty()) {
                 while (!input_stack.empty())
@@ -571,7 +570,7 @@ void SPGameLoop() {
     cleardevice();
 }
 
-button initMenuButton(int index, char text[]) {
+button initMenuButton(int index, const char text[]) {
     // THE MENU ALWAYS HAS A MAXIMUM OF FOUR BUTTONS
     button btn;
 
@@ -582,6 +581,7 @@ button initMenuButton(int index, char text[]) {
     btn.bottom = btn.top + MENU_BTN_H;
 
     strcpy(btn.graph.text, text);
+    btn.graph.fontsize = MENU_BUTTON_FONTSIZE;
     btn.graph.bg = MENU_BUTTON_BG;
     btn.graph.fg = MENU_BUTTON_FG;
     btn.graph.bg_hover = MENU_BUTTON_BG_HOVER;
@@ -590,13 +590,41 @@ button initMenuButton(int index, char text[]) {
     return btn;
 }
 
-void mainMenuLoop() {
-    button btn_play = initMenuButton(0, "Play");
-    button btn_settings = initMenuButton(1, "Settings");
-    button btn_help = initMenuButton(2, "Help");
-    button btn_quit = initMenuButton(3, "Quit");
+void drawGameTitle() {
+    char title[100];
+    strcpy(title, GAME_TITLE);
+    drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, title, TITLE_FG, MENU_BG, TITLE_FONTSIZE);
 }
 
+void mainMenu() {
+    setbkcolorRGB(MENU_BG);
+    cleardevice();
+    drawGameTitle();
+
+    button btn_play = initMenuButton(0, BTN_PLAY);
+    button btn_settings = initMenuButton(1, BTN_SETTINGS);
+    button btn_help = initMenuButton(2, BTN_HELP);
+    button btn_quit = initMenuButton(3, BTN_QUIT);
+
+    drawButton(btn_play);
+    drawButton(btn_settings);
+    drawButton(btn_help);
+    drawButton(btn_quit);
+
+    while (true) {
+        buttonLoopStep(btn_play);
+        buttonLoopStep(btn_settings);
+        buttonLoopStep(btn_help);
+        buttonLoopStep(btn_quit);
+
+        if (ismouseclick(WM_LBUTTONDOWN)) {
+            if (btn_play.hover) {
+                SPGameLoop();
+            }
+            clearmouseclick(WM_LBUTTONDOWN);
+        }
+    }
+}
 
 // todo: reverse-singleplayer, AI proof of concept
 

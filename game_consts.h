@@ -35,11 +35,22 @@ const int INP_NUMPANEL_FONTSIZE = 5;
 const int MENU_BTN_W = 500;
 const int MENU_BTN_H = 80;
 const int MENU_BTN_SPACING = 20;
-const int MENU_OFFSET = 60;
+const int MENU_OFFSET = 150;
+const int MENU_BUTTON_FONTSIZE = 5;
 
+const int TITLE_FONTSIZE = 8;
+const char GAME_TITLE[] = "Five digits";
+
+const char BTN_PLAY[] = "Play";
+const char BTN_SETTINGS[] = "Settings";
+const char BTN_HELP[] = "Help";
+const char BTN_QUIT[] = "Quit";
+
+    // labels
 const char LABEL1[] = "fixed";
 const char LABEL2[] = "moved";
 
+    // popups
 const int INPUT_ERR_POPUP_FONTSIZE = 2;
 const int INPUT_ERR_POPUP_W = 550;
 const int INPUT_ERR_POPUP_H = 150;
@@ -57,4 +68,3 @@ const char SP_WIN_POPUP[] =
     "Press any key to return to the menu.";
 
 const int TEXT_LINE_SPACING = 2;
-

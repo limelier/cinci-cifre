@@ -45,10 +45,8 @@ const RGB_color _GREY {100, 100, 100};
 #define INP_BUTTON_FG_HOVER _BLACK
 
     // menu
-#define MENU_TITLE_FG
-#define MENU_TITLE_BG
-
-#define MENU_BACKING
+#define TITLE_FG _RED
+#define MENU_BG _BLACK
 
 #define MENU_BUTTON_BG _BLUEGRAY
 #define MENU_BUTTON_FG _BLACK
