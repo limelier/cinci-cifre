@@ -571,6 +571,31 @@ void SPGameLoop() {
     cleardevice();
 }
 
+button initMenuButton(int index, char text[]) {
+    // THE MENU ALWAYS HAS A MAXIMUM OF FOUR BUTTONS
+    button btn;
+
+    btn.left = (WINDOW_WIDTH - MENU_BTN_W) / 2;
+    btn.right = btn.left + MENU_BTN_W;
+    
+    btn.top = MENU_OFFSET + index * (MENU_BTN_H + MENU_BTN_SPACING);
+    btn.bottom = btn.top + MENU_BTN_H;
+
+    strcpy(btn.graph.text, text);
+    btn.graph.bg = MENU_BUTTON_BG;
+    btn.graph.fg = MENU_BUTTON_FG;
+    btn.graph.bg_hover = MENU_BUTTON_BG_HOVER;
+    btn.graph.fg_hover = MENU_BUTTON_FG_HOVER;
+
+    return btn;
+}
+
+void mainMenuLoop() {
+    button btn_play = initMenuButton(0, "Play");
+    button btn_settings = initMenuButton(1, "Settings");
+    button btn_help = initMenuButton(2, "Help");
+    button btn_quit = initMenuButton(3, "Quit");
+}
 
 
 // todo: reverse-singleplayer, AI proof of concept

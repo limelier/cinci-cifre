@@ -31,6 +31,12 @@ const int ENTER_BTN_WIDTH = 100;
 const int INP_BUTTON_FONTSIZE = 3;
 const int INP_NUMPANEL_FONTSIZE = 5;
 
+    // menu
+const int MENU_BTN_W = 500;
+const int MENU_BTN_H = 80;
+const int MENU_BTN_SPACING = 20;
+const int MENU_OFFSET = 60;
+
 const char LABEL1[] = "fixed";
 const char LABEL2[] = "moved";
 
