@@ -16,6 +16,7 @@ const int HEADER_PADDING = 5;
 const int GAMEPANEL_PADDING = 10;
 const int HEADER_TOP = 10;
 const int GAMEPANEL_DIVIDER = 10;
+const int MP_SPACING = 50;
 
     // input dialog
 const int INP_BOX_HEIGHT = 80;
@@ -74,6 +75,15 @@ const int SP_WIN_POPUP_W = WINDOW_WIDTH;
 const int SP_WIN_POPUP_H = WINDOW_HEIGHT;
 const char SP_WIN_POPUP[] =
     "Congratulations, you win!\n"
+    "Press any key to return to the menu.";
+const char MP_TIE_POPUP[] =
+    "The game is a tie!\n"
+    "Press any key to return to the menu.";
+const char MP_P1_WIN_POPUP[] =
+    "Player 1 wins!\n"
+    "Press any key to return to the menu.";
+const char MP_P2_WIN_POPUP[] =
+    "Player 2 wins!\n"
     "Press any key to return to the menu.";
 
 const int TEXT_LINE_SPACING = 2;

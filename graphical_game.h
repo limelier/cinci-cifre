@@ -564,12 +564,78 @@ void SPGameLoop(bool help) {
 
         guesslistPush(game.list, makeGuess(game.base_perm, input));
 
-        if (game.list.first->res.fixed == 5) // doesn't work, fix
+        if (game.list.first->res.fixed == 5)
             game.has_been_won = true;
     }
 
     char popup_text[200];
     strcpy(popup_text, SP_WIN_POPUP);
+    popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
+    cleardevice();
+}
+
+void swapActiveGame(game_panel &game1, game_panel &game2) {
+    if (game1.active == true) {
+        game1.active = false;
+        game2.active = true;
+    }
+    else {
+        game1.active = true;
+        game2.active = false;
+    }
+}
+
+void MPGameLoop() {
+    game_panel game1;
+    game_panel game2;
+    setbkcolorRGB(_BLACK);
+    cleardevice();
+
+
+    int game1_left = WINDOW_WIDTH / 2 - MP_SPACING / 2 - gamePanelWidth();
+    int game2_left = game1_left + gamePanelWidth() + MP_SPACING;
+
+    game1.active = false;
+    game2.active = false;
+
+    game1.base_perm = inputPermutation2();
+    drawGamePanel(game1_left, game1);
+    game2.base_perm = inputPermutation2();
+    drawGamePanel(game2_left, game2);
+
+
+    game1.active = true;
+    permutation input;
+    while (game1.has_been_won == false && game2.has_been_won == false) {
+        setbkcolorRGB(_BLACK);
+        cleardevice();
+
+        drawGamePanel(game1_left, game1);
+        drawGamePanel(game2_left, game2);
+        input = inputPermutation2();
+        guesslistPush(game1.list, makeGuess(game1.base_perm, input));
+        if (game1.list.first->res.fixed == 5)
+            game1.has_been_won = true;
+        swapActiveGame(game1, game2);
+
+        drawGamePanel(game1_left, game1);
+        drawGamePanel(game2_left, game2);
+        input = inputPermutation2();
+        guesslistPush(game2.list, makeGuess(game2.base_perm, input));
+        if (game2.list.first->res.fixed == 5)
+            game2.has_been_won = true;
+        swapActiveGame(game1, game2);
+    }
+
+    char popup_text[200];
+    if (game1.has_been_won)
+        if (game2.has_been_won)
+            strcpy(popup_text, MP_TIE_POPUP);
+        else
+            strcpy(popup_text, MP_P1_WIN_POPUP);
+    else if (game2.has_been_won)
+        strcpy(popup_text, MP_P2_WIN_POPUP);
+    
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
 }
@@ -633,6 +699,10 @@ void playMenu() {
             }
             if (btn_SPP.hover) {
                 SPGameLoop(true);
+                game_selected = true;
+            }
+            if (btn_MP.hover) {
+                MPGameLoop();
                 game_selected = true;
             }
         }
