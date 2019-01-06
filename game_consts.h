@@ -36,7 +36,7 @@ const int MENU_BTN_W = 500;
 const int MENU_BTN_H = 80;
 const int MENU_BTN_SPACING = 20;
 const int MENU_OFFSET = 150;
-const int MENU_BUTTON_FONTSIZE = 5;
+const int MENU_BUTTON_FONTSIZE = 4;
 
 const int TITLE_FONTSIZE = 8;
 const char GAME_TITLE[] = "Five digits";
@@ -45,6 +45,15 @@ const char BTN_PLAY[] = "Play";
 const char BTN_SETTINGS[] = "Settings";
 const char BTN_HELP[] = "Help";
 const char BTN_QUIT[] = "Quit";
+
+    // play menu
+const int PLAY_FONTSIZE = 3;
+const char PLAY_TEXT[] = "Which mode would you like to play?";
+
+const char BTN_SINGLEPLAYER[] = "Singleplayer";
+const char BTN_SINGLEPLAYER_PLUS[] = "Singleplayer plus help";
+const char BTN_MULTIPLAYER[] = "Multiplayer";
+const char BTN_AI[] = "AI demonstration";
 
     // labels
 const char LABEL1[] = "fixed";

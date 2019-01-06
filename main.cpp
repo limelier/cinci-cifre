@@ -11,10 +11,8 @@ int main() {
     setvisualpage(1);
     srand(time(nullptr));
 
-    mainMenu();
-    getch();
-    SPGameLoop();
-
+    game();
+    
     getch();
     closegraph();
 

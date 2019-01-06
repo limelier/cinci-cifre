@@ -541,17 +541,21 @@ int gamePanelWidth() {
     return width;
 }
 
-void SPGameLoop() {
+void SPGameLoop(bool help) {
     game_panel game;
+    setbkcolorRGB(_BLACK);
+    cleardevice();
+
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
-    // after these instructions, base_perm has the base permutation in it
-    // game.base_perm = inputPermutation2();
-    game.base_perm = RandomPermutationGenerator();
+    if (help) 
+        game.base_perm = inputPermutation2();
+    else
+        game.base_perm = RandomPermutationGenerator();
 
     permutation input;
     while (game.has_been_won == false) {
-        setbkcolor(BLACK);
+        setbkcolorRGB(_BLACK);
         cleardevice();
 
         drawGamePanel(game_left, game);
@@ -596,7 +600,43 @@ void drawGameTitle() {
     drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, title, TITLE_FG, MENU_BG, TITLE_FONTSIZE);
 }
 
-void mainMenu() {
+void playMenu() {
+    setbkcolorRGB(MENU_BG);
+    cleardevice();
+
+    char text[200];
+    strcpy(text, PLAY_TEXT);
+    drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, text, PLAY_FG, PLAY_BG, PLAY_FONTSIZE);
+
+    button btn_SP = initMenuButton(0, BTN_SINGLEPLAYER);
+    button btn_SPP = initMenuButton(1, BTN_SINGLEPLAYER_PLUS);
+    button btn_MP = initMenuButton(2, BTN_MULTIPLAYER);
+    button btn_AI = initMenuButton(3, BTN_AI);
+
+    drawButton(btn_SP);
+    drawButton(btn_SPP);
+    drawButton(btn_MP);
+    drawButton(btn_AI);
+
+    while (true) {
+        buttonLoopStep(btn_SP);
+        buttonLoopStep(btn_SPP);
+        buttonLoopStep(btn_MP);
+        buttonLoopStep(btn_AI);
+
+        if (ismouseclick(WM_LBUTTONDOWN)) {
+            clearmouseclick(WM_LBUTTONDOWN);
+            if (btn_SP.hover) {
+                SPGameLoop(false);
+            }
+            if (btn_SPP.hover) {
+                SPGameLoop(true);
+            }
+        }
+    }
+}
+
+void game() {
     setbkcolorRGB(MENU_BG);
     cleardevice();
     drawGameTitle();
@@ -618,10 +658,11 @@ void mainMenu() {
         buttonLoopStep(btn_quit);
 
         if (ismouseclick(WM_LBUTTONDOWN)) {
-            if (btn_play.hover) {
-                SPGameLoop();
-            }
             clearmouseclick(WM_LBUTTONDOWN);
+            if (btn_play.hover) {
+                
+                playMenu();
+            }
         }
     }
 }

@@ -53,6 +53,10 @@ const RGB_color _GREY {100, 100, 100};
 #define MENU_BUTTON_BG_HOVER _BLUE
 #define MENU_BUTTON_FG_HOVER _BLACK
 
+    // play menu
+#define PLAY_FG _WHITE
+#define PLAY_BG _BLACK
+
     // popups
 #define POPUP_BG _RED
 #define POPUP_FG _BLACK
