@@ -36,16 +36,16 @@ const char *lang_ro[END_TRANSLATIONS] = {
 
     // SP_WIN_POPUP,
     "Felicitari, ati castigat!\n"
-    "Apasati orice tasta pentru a va intoarce la meniu.",
+    "Apasati orice tasta pentru a continua.",
     // MP_TIE_POPUP,
     "Jocul este o remiza!\n"
-    "Apasati orice tasta pentru a va intoarce la meniu.",
+    "Apasati orice tasta pentru a continua.",
     // MP_P1_WIN_POPUP,
     "Jucatorul 1 castiga!\n"
-    "Apasati orice tasta pentru a va intoarce la meniu.",
+    "Apasati orice tasta pentru a continua.",
     // MP_P2_WIN_POPUP,
     "Jucatorul 2 castiga!\n"
-    "Apasati orice tasta pentru a va intoarce la meniu."
+    "Apasati orice tasta pentru a continua."
     
     // END_TRANSLATIONS
 };
