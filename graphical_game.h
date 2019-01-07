@@ -4,7 +4,9 @@
 #include "rares_depends.h"
 #include <string.h>
 #include <winbgim.h>
-#include <stack> // needs to go.
+
+#include "mystack.h"
+// #include <stack> // needs to go.
 
 // PARAMETERS
 #include "game_consts.h"
@@ -329,14 +331,17 @@ void drawInputNumpanel() {
     drawFilledRect(left, top, right, bottom);
 }
 
-void drawInputStack(stack <int> input_stack) {
-    stack <int> reverse_input_stack;
+void drawInputStack(stack stk) {
     char text[PERM_LEN + 1] = "     ";
+    // required for nondestructive popping
+    stack input_stack = copyStack(stk);
 
-    while (input_stack.empty() == false) {
-        text[input_stack.size() - 1] = input_stack.top() + '0';
-        input_stack.pop();
+    while (!emptyStack(input_stack)) {
+        text[input_stack.size - 1] = top(input_stack) + '0';
+        cerr << top(input_stack) << ' ';
+        pop(input_stack);
     }
+    cerr << endl << text << endl;
 
     int top = INP_BOX_TOP + INP_BOX_VERT_PADDING;
     int bottom = INP_BOX_BOTTOM - INP_BOX_VERT_PADDING;
@@ -349,19 +354,22 @@ void drawInputStack(stack <int> input_stack) {
     outtextxy(left + 20, top + 2, text);
 }
 
-permutation permFromStack(stack <int> s) {
+permutation permFromStack(stack stk) {
     permutation perm;
     int digit = 0;
 
-    if (s.size() != PERM_LEN) {
+    // required for non-destructive popping
+    stack s = copyStack(stk);
+
+    if (s.size != PERM_LEN) {
         throw "Stack isn't the right height.";
         perm.is_valid = false;
     }
 
     perm.is_valid = true;
     for (int i = 4; i >= 0; i--) {
-        digit = s.top();
-        s.pop();
+        digit = top(s);
+        pop(s);
         perm.digit[i] = digit;
         if (perm.digit_used[digit] == true)
             perm.is_valid = false;
@@ -434,7 +442,7 @@ void popup (int width, int height, int fontsize, char text[]) {
 permutation inputPermutation2() {
     permutation input;
     bool perm_complete = false;
-    stack <int> input_stack;
+    stack input_stack;
 
     int inp_box_bottom = WINDOW_HEIGHT - INP_BOX_BOTTOM_MARGIN;
     int inp_box_top = inp_box_bottom - INP_BOX_HEIGHT;
@@ -496,23 +504,23 @@ permutation inputPermutation2() {
         if (kbhit()) {
             char key = getch();
             if (key >= '0' && key <= '9')
-                if (input_stack.size() < PERM_LEN) {
-                    input_stack.push(key - '0');
+                if (input_stack.size < PERM_LEN) {
+                    push(input_stack, (int)(key - '0'));
                     input_stack_changed = true;
                 }
         }
         // look for button hits: enter, C and CE
         if (ismouseclick(WM_LBUTTONDOWN)) {
-            if (btn_C.hover && !input_stack.empty()) {
-                input_stack.pop();
+            if (btn_C.hover && !emptyStack(input_stack)) {
+                pop(input_stack);
                 input_stack_changed = true;
             }
-            else if (btn_CE.hover && !input_stack.empty()) {
-                while (!input_stack.empty())
-                    input_stack.pop();
+            else if (btn_CE.hover && !emptyStack(input_stack)) {
+                while (!emptyStack(input_stack))
+                    pop(input_stack);
                 input_stack_changed = true;
             }
-            else if (btn_enter.hover && input_stack.size() == PERM_LEN) {
+            else if (btn_enter.hover && input_stack.size == PERM_LEN) {
                 input = permFromStack(input_stack);
                 if (input.is_valid == true)
                     perm_complete = true;
@@ -520,8 +528,8 @@ permutation inputPermutation2() {
                     char popup_text[200];
                     strcpy(popup_text, INPUT_ERR_POPUP);
                     popup(INPUT_ERR_POPUP_W, INPUT_ERR_POPUP_H, INPUT_ERR_POPUP_FONTSIZE, popup_text);
-                    while (!input_stack.empty())
-                        input_stack.pop();
+                    while (!emptyStack(input_stack))
+                        pop(input_stack);
                     input_stack_changed = true;
                 }
 
