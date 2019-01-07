@@ -48,4 +48,4 @@ const char *lang_ro[END_TRANSLATIONS] = {
     "Apasati orice tasta pentru a va intoarce la meniu."
     
     // END_TRANSLATIONS
-}
+};

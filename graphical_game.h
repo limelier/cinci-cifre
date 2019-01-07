@@ -7,6 +7,7 @@
 #include "mystack.h"
 #include "game_consts.h"
 #include "colors.h"
+#include "lang.h"
 
 #pragma region Base_Functions
 void drawFilledRect(int left, int top, int right, int bottom) {
@@ -284,11 +285,11 @@ void drawPanelHeader(int left, int top , bool greyed_out) {
 
     char current_label[30];
 
-    strcpy(current_label, LABEL1);
+    strcpy(current_label, tl_get_text(LABEL1));
     drawLabel(label_x, label_y, current_label, greyed_out);
 
     label_x += 2 * RESULT_DIGIT_MARGIN + DIGIT_TILE_WIDTH;
-    strcpy(current_label, LABEL2);
+    strcpy(current_label, tl_get_text(LABEL2));
     drawLabel(label_x, label_y, current_label, greyed_out);
 }
 
@@ -542,7 +543,7 @@ permutation inputPermutation2() {
                     perm_complete = true;
                 else {
                     char popup_text[200];
-                    strcpy(popup_text, INPUT_ERR_POPUP);
+                    strcpy(popup_text, tl_get_text(INPUT_ERR_POPUP));
                     popup(INPUT_ERR_POPUP_W, INPUT_ERR_POPUP_H, INPUT_ERR_POPUP_FONTSIZE, popup_text);
                     while (!emptyStack(input_stack))
                         pop(input_stack);
@@ -587,7 +588,7 @@ void SPGameLoop(bool help) {
     }
 
     char popup_text[200];
-    strcpy(popup_text, SP_WIN_POPUP);
+    strcpy(popup_text, tl_get_text(SP_WIN_POPUP));
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
 }
@@ -637,11 +638,11 @@ void MPGameLoop() {
     char popup_text[200];
     if (game1.has_been_won)
         if (game2.has_been_won)
-            strcpy(popup_text, MP_TIE_POPUP);
+            strcpy(popup_text, tl_get_text(MP_TIE_POPUP));
         else
-            strcpy(popup_text, MP_P1_WIN_POPUP);
+            strcpy(popup_text, tl_get_text(MP_P1_WIN_POPUP));
     else if (game2.has_been_won)
-        strcpy(popup_text, MP_P2_WIN_POPUP);
+        strcpy(popup_text, tl_get_text(MP_P2_WIN_POPUP));
     
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
@@ -671,7 +672,7 @@ button initMenuButton(int index, const char text[]) {
 
 void drawGameTitle() {
     char title[100];
-    strcpy(title, GAME_TITLE);
+    strcpy(title, tl_get_text(GAME_TITLE));
     drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, title, TITLE_FG, MENU_BG, TITLE_FONTSIZE);
 }
 
@@ -680,13 +681,13 @@ void playMenu() {
     cleardevice();
 
     char text[200];
-    strcpy(text, PLAY_TEXT);
+    strcpy(text, tl_get_text(PLAY_TEXT));
     drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, text, PLAY_FG, PLAY_BG, PLAY_FONTSIZE);
 
-    button btn_SP = initMenuButton(0, BTN_SINGLEPLAYER);
-    button btn_SPP = initMenuButton(1, BTN_SINGLEPLAYER_PLUS);
-    button btn_MP = initMenuButton(2, BTN_MULTIPLAYER);
-    button btn_AI = initMenuButton(3, BTN_AI);
+    button btn_SP = initMenuButton(0, tl_get_text(BTN_SINGLEPLAYER));
+    button btn_SPP = initMenuButton(1, tl_get_text(BTN_SINGLEPLAYER_PLUS));
+    button btn_MP = initMenuButton(2, tl_get_text(BTN_MULTIPLAYER));
+    button btn_AI = initMenuButton(3, tl_get_text(BTN_AI));
 
     drawButton(btn_SP);
     drawButton(btn_SPP);
@@ -719,10 +720,10 @@ void playMenu() {
 }
 
 void game() {
-    button btn_play = initMenuButton(0, BTN_PLAY);
-    button btn_settings = initMenuButton(1, BTN_SETTINGS);
-    button btn_help = initMenuButton(2, BTN_HELP);
-    button btn_quit = initMenuButton(3, BTN_QUIT);
+    button btn_play = initMenuButton(0, tl_get_text(BTN_PLAY));
+    button btn_settings = initMenuButton(1, tl_get_text(BTN_SETTINGS));
+    button btn_help = initMenuButton(2, tl_get_text(BTN_HELP));
+    button btn_quit = initMenuButton(3, tl_get_text(BTN_QUIT));
 
     bool menu_landing = true;
     while (true) {

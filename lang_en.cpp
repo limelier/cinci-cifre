@@ -46,6 +46,6 @@ const char *lang_en[END_TRANSLATIONS] = {
     // MP_P2_WIN_POPUP,
     "Player 2 wins!\n"
     "Press any key to return to the menu."
-    
+
     // END_TRANSLATIONS
-}
+};
