@@ -4,17 +4,14 @@
 #include "rares_depends.h"
 #include <string.h>
 #include <winbgim.h>
-
 #include "mystack.h"
-// #include <stack> // needs to go.
 
 // PARAMETERS
 #include "game_consts.h"
 // COLORS
 #include "colors.h"
 
-// BASIC DRAW FUNCTIONS
-
+#pragma region Base_Functions
 void drawFilledRect(int left, int top, int right, int bottom) {
     int poly_points[8] =
     {
@@ -52,8 +49,46 @@ void drawCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int
     outtextxy(x, y, text);
 }
 
-// BUTTONS
+void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int fontsize) {
+    char chunk[200];
+    int length = strlen(text);
+    int lines = 1;
 
+    for (int i = 0; i < length; i++) {
+        if (text[i] == '\n')
+            lines++;
+    }
+
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, fontsize);
+    int line_height = textheight(text);
+    line_height += TEXT_LINE_SPACING;
+
+    int line_y;
+    line_y = y - (lines / 2) * line_height;
+    if (lines % 2 == 0)
+        line_y += line_height / 2;
+
+    int j = 0;
+    int i;
+    for (i = 0; i < length; i++) {
+        if (text[i] == '\n') {
+            strncpy(chunk, text + j, i - j);
+            chunk[i - j] = '\0';
+            drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
+            line_y += line_height;
+            j = i + 1;
+        }
+    }
+
+    strncpy(chunk, text + j, i - j);
+    chunk[i - j] = '\0';
+    drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
+
+
+}
+#pragma endregion
+
+#pragma region Buttons
 struct button_graphics {
     RGB_color bg = _WHITE;
     RGB_color bg_hover = _BLACK;
@@ -91,9 +126,48 @@ void drawButton(button btn) {
     int center_y = (btn.top + btn.bottom) / 2;
     drawCenteredText(center_x, center_y, btn.graph.text, fg_color, bg_color, btn.graph.fontsize);
 }
+void buttonLoopStep(button &btn) {
+    bool hover;
 
-// GAME FUNCTIONS
+    if (mousex() >= btn.left &&
+        mousex() <= btn.right &&
+        mousey() >= btn.top &&
+        mousey() <= btn.bottom)
+        hover = true;
+    else
+        hover = false;
 
+    if (hover != btn.hover) {
+        btn.hover = hover;
+        drawButton(btn);
+    }
+}
+#pragma endregion
+
+#pragma region Popups
+void drawPopup (int width, int height, int fontsize, char text[]) { // todo: proper multi-line formatting
+    setcolorRGB(POPUP_BG);
+    setfillstyleFlatRGB(POPUP_BG);
+    int x = WINDOW_WIDTH / 2;
+    int y = WINDOW_HEIGHT / 2;
+    drawFilledRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
+    drawMultiCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
+}
+
+void popup (int width, int height, int fontsize, char text[]) {
+    setactivepage(2);
+    setbkcolorRGB(_BLACK);
+    cleardevice();
+    drawPopup (width, height, fontsize, text);
+    setvisualpage(2);
+
+    getch();
+    setactivepage(1);
+    setvisualpage(1);
+}
+#pragma endregion
+
+#pragma region Game_Panel
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
     RGB_color bg_color;
     if (greyed_out == true) {
@@ -261,6 +335,14 @@ void drawGamePanel (int left, game_panel game) {
     drawGuessList(left + GAMEPANEL_PADDING, guesslist_top, game.list, greyed_out);
 }
 
+int gamePanelWidth() {
+    int width = 0;
+    width += guessListWidth();
+    width += 2 * GUESSLIST_PADDING;
+    width += 2 * GAMEPANEL_PADDING;
+    return width;
+}
+
 void guesslistPop (guesslist &list) {
     list.num--;
 
@@ -296,23 +378,19 @@ guessnode *makeGuess (permutation base_perm, permutation perm) {
     return node;
 }
 
-void buttonLoopStep(button &btn) {
-    bool hover;
-
-    if (mousex() >= btn.left &&
-        mousex() <= btn.right &&
-        mousey() >= btn.top &&
-        mousey() <= btn.bottom)
-        hover = true;
-    else
-        hover = false;
-
-    if (hover != btn.hover) {
-        btn.hover = hover;
-        drawButton(btn);
+void swapActiveGame(game_panel &game1, game_panel &game2) {
+    if (game1.active == true) {
+        game1.active = false;
+        game2.active = true;
+    }
+    else {
+        game1.active = true;
+        game2.active = false;
     }
 }
+#pragma endregion
 
+#pragma region Input_Panel
 void drawInputBacking() {
     setcolorRGB(INP_BACKING);
     setfillstyleFlatRGB(INP_BACKING);
@@ -378,65 +456,6 @@ permutation permFromStack(stack stk) {
     }
 
     return perm;
-}
-
-void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int fontsize) {
-    char chunk[200];
-    int length = strlen(text);
-    int lines = 1;
-
-    for (int i = 0; i < length; i++) {
-        if (text[i] == '\n')
-            lines++;
-    }
-
-    settextstyle(COMPLEX_FONT, HORIZ_DIR, fontsize);
-    int line_height = textheight(text);
-    line_height += TEXT_LINE_SPACING;
-
-    int line_y;
-    line_y = y - (lines / 2) * line_height;
-    if (lines % 2 == 0)
-        line_y += line_height / 2;
-
-    int j = 0;
-    int i;
-    for (i = 0; i < length; i++) {
-        if (text[i] == '\n') {
-            strncpy(chunk, text + j, i - j);
-            chunk[i - j] = '\0';
-            drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
-            line_y += line_height;
-            j = i + 1;
-        }
-    }
-
-    strncpy(chunk, text + j, i - j);
-    chunk[i - j] = '\0';
-    drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
-
-
-}
-
-void drawPopup (int width, int height, int fontsize, char text[]) { // todo: proper multi-line formatting
-    setcolorRGB(POPUP_BG);
-    setfillstyleFlatRGB(POPUP_BG);
-    int x = WINDOW_WIDTH / 2;
-    int y = WINDOW_HEIGHT / 2;
-    drawFilledRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2);
-    drawMultiCenteredText(x, y, text, POPUP_FG, POPUP_BG, fontsize);
-}
-
-void popup (int width, int height, int fontsize, char text[]) {
-    setactivepage(2);
-    setbkcolorRGB(_BLACK);
-    cleardevice();
-    drawPopup (width, height, fontsize, text);
-    setvisualpage(2);
-
-    getch();
-    setactivepage(1);
-    setvisualpage(1);
 }
 
 permutation inputPermutation2() {
@@ -540,15 +559,9 @@ permutation inputPermutation2() {
 
     return input;
 }
+#pragma endregion
 
-int gamePanelWidth() {
-    int width = 0;
-    width += guessListWidth();
-    width += 2 * GUESSLIST_PADDING;
-    width += 2 * GAMEPANEL_PADDING;
-    return width;
-}
-
+#pragma region Game_Loops
 void SPGameLoop(bool help) {
     game_panel game;
     setbkcolorRGB(_BLACK);
@@ -580,17 +593,6 @@ void SPGameLoop(bool help) {
     strcpy(popup_text, SP_WIN_POPUP);
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
-}
-
-void swapActiveGame(game_panel &game1, game_panel &game2) {
-    if (game1.active == true) {
-        game1.active = false;
-        game2.active = true;
-    }
-    else {
-        game1.active = true;
-        game2.active = false;
-    }
 }
 
 void MPGameLoop() {
@@ -647,7 +649,9 @@ void MPGameLoop() {
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
 }
+#pragma endregion
 
+#pragma region Menus_and_screens
 button initMenuButton(int index, const char text[]) {
     // THE MENU ALWAYS HAS A MAXIMUM OF FOUR BUTTONS
     button btn;
@@ -756,7 +760,4 @@ void game() {
         }
     }
 }
-
-// todo: reverse-singleplayer, AI proof of concept
-
-// todo: 2 player
+#pragma endregion
