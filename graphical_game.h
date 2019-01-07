@@ -5,10 +5,7 @@
 #include <string.h>
 #include <winbgim.h>
 #include "mystack.h"
-
-// PARAMETERS
 #include "game_consts.h"
-// COLORS
 #include "colors.h"
 
 #pragma region Base_Functions
