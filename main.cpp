@@ -10,7 +10,7 @@ int main() {
     setvisualpage(1);
     srand(time(nullptr));
 
-    // testing
+    //testing
     // slide_switch ssw;
     // ssw.x = 300;
     // ssw.y = 200;

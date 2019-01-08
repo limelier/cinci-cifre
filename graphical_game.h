@@ -9,6 +9,8 @@
 #include "colors.h"
 #include "lang.h"
 
+bool back_to_menu = false;
+
 #pragma region Base_Functions
 void drawFilledRect(int left, int top, int right, int bottom) {
     int poly_points[8] =
@@ -222,6 +224,7 @@ void SSwitchLoopStep(slide_switch &ssw) {
 
 void SSwitchFlick(slide_switch &ssw) {
     ssw.value = 1 - ssw.value;
+    drawSSwitch(ssw);
 }
 
 #pragma endregion
@@ -637,6 +640,8 @@ permutation inputPermutation2() {
             }
             clearmouseclick(WM_LBUTTONDOWN);
         }
+
+        if (back_to_menu) break;
     }
 
     return input;
@@ -671,7 +676,11 @@ void SPGameLoop(bool help) {
 
         if (game.list.first->res.fixed == 5)
             game.has_been_won = true;
+
+        if (back_to_menu) break;
     }
+
+    if (back_to_menu) return;
 
     char popup_text[200];
     strcpy(popup_text, tl_get_text(SP_WIN_POPUP));
@@ -719,7 +728,11 @@ void MPGameLoop() {
         if (game2.list.first->res.fixed == 5)
             game2.has_been_won = true;
         swapActiveGame(game1, game2);
+
+        if (back_to_menu) break;
     }
+
+    if (back_to_menu) return;
 
     char popup_text[200];
     if (game1.has_been_won)
@@ -751,7 +764,12 @@ void AIGameLoop() {
 
         EasyAI(game);
         Sleep(300);
+
+        if (back_to_menu)
+            break;   
     }
+    if (back_to_menu) return;
+
 
     Sleep(2000);
 
@@ -833,6 +851,9 @@ void playMenu() {
                 game_selected = true;
             }
         }
+
+        if (back_to_menu)
+            break;
     }
 }
 
