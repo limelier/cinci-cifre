@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base_dependencies.h"
-#include "rares_depends.h"
+#include "rpg.h"
 #include <string.h>
 #include <winbgim.h>
 #include "mystack.h"
@@ -163,12 +163,17 @@ void drawSSwitch (slide_switch ssw) {
     int x = ssw.x;
     int y = ssw.y;
 
-    int top = x - SSW_BG_H / 2;
-    int bottom = x + SSW_BG_H / 2;
+    int top = y - SSW_BG_H / 2;
+    int bottom = y + SSW_BG_H / 2;
     int left = x - SSW_BG_W / 2;
     int right = x + SSW_BG_W / 2;
 
-    RGB_color outline = ssw.hover ? ssw.hover_col : ssw.bg;
+    RGB_color outline;
+    if (ssw.hover) 
+        outline = ssw.hover_col;
+    else
+        outline = ssw.bg;
+        
     setcolorRGB(outline);
     setfillstyleFlatRGB(ssw.bg);
     drawFilledRect(left, top, right, bottom);
@@ -188,6 +193,35 @@ void drawSSwitch (slide_switch ssw) {
     drawFilledRect(left, top, right, bottom);
     drawCenteredText(x - SSW_TEXT_OFFSET, y, ssw.label1, ssw.text, ssw.backing, SSW_FONTSIZE);
     drawCenteredText(x + SSW_TEXT_OFFSET, y, ssw.label2, ssw.text, ssw.backing, SSW_FONTSIZE);
+}
+
+void SSwitchLoopStep(slide_switch &ssw) {
+    bool hover;
+
+    int x = ssw.x;
+    int y = ssw.y;
+
+    int top = y - SSW_BG_H / 2;
+    int bottom = y + SSW_BG_H / 2;
+    int left = x - SSW_BG_W / 2;
+    int right = x + SSW_BG_W / 2;
+
+    if (mousex() >= left &&
+        mousex() <= right &&
+        mousey() >= top &&
+        mousey() <= bottom)
+        hover = true;
+    else
+        hover = false;
+
+    if (hover != ssw.hover) {
+        ssw.hover = hover;
+        drawSSwitch(ssw);
+    }
+}
+
+void SSwitchFlick(slide_switch &ssw) {
+    ssw.value = 1 - ssw.value;
 }
 
 #pragma endregion
@@ -609,6 +643,8 @@ permutation inputPermutation2() {
 }
 #pragma endregion
 
+#include "rares_depends.h"
+
 #pragma region Game_Loops
 void SPGameLoop(bool help) {
     game_panel game;
@@ -696,6 +732,27 @@ void MPGameLoop() {
     
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
+}
+
+void AIGameLoop() {
+    game_panel game;
+    setbkcolorRGB(_BLACK);
+    cleardevice();
+
+    int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
+
+    game.base_perm = inputPermutation2();
+    
+    while (game.has_been_won == false) {
+        setbkcolorRGB(_BLACK);
+        cleardevice();
+
+        drawGamePanel(game_left, game);
+
+        EasyAI(game);
+        Sleep(150);
+    }
+
 }
 #pragma endregion
 
