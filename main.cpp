@@ -25,8 +25,6 @@ int main() {
     //     }
     // }
     // getch();
-    
-    AIGameLoop();
 
     game();
 

@@ -750,9 +750,15 @@ void AIGameLoop() {
         drawGamePanel(game_left, game);
 
         EasyAI(game);
-        Sleep(150);
+        Sleep(300);
     }
 
+    Sleep(2000);
+
+    char popup_text[200];
+    strcpy(popup_text, tl_get_text(SP_WIN_POPUP));
+    popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
+    cleardevice();
 }
 #pragma endregion
 
@@ -820,6 +826,10 @@ void playMenu() {
             }
             if (btn_MP.hover) {
                 MPGameLoop();
+                game_selected = true;
+            }
+            if (btn_AI.hover) {
+                AIGameLoop();
                 game_selected = true;
             }
         }
