@@ -40,51 +40,18 @@ const int MENU_OFFSET = 150;
 const int MENU_BUTTON_FONTSIZE = 4;
 
 const int TITLE_FONTSIZE = 8;
-// const char GAME_TITLE[] = "Five digits";
-
-// const char BTN_PLAY[] = "Play";
-// const char BTN_SETTINGS[] = "Settings";
-// const char BTN_HELP[] = "Help";
-// const char BTN_QUIT[] = "Quit";
 
     // play menu
 const int PLAY_FONTSIZE = 3;
-// const char PLAY_TEXT[] = "Which mode would you like to play?";
-
-// const char BTN_SINGLEPLAYER[] = "Singleplayer";
-// const char BTN_SINGLEPLAYER_PLUS[] = "Singleplayer plus help";
-// const char BTN_MULTIPLAYER[] = "Multiplayer";
-// const char BTN_AI[] = "AI demonstration";
-
-    // labels
-// const char LABEL1[] = "fixed";
-// const char LABEL2[] = "moved";
 
     // popups
 const int INPUT_ERR_POPUP_FONTSIZE = 2;
 const int INPUT_ERR_POPUP_W = 550;
 const int INPUT_ERR_POPUP_H = 150;
-// const char INPUT_ERR_POPUP[] =
-//     "A permutation is not allowed to contain the\n"
-//     "same digit multiple times. Please try again.\n"
-//     "\n"
-//     "Press any key to continue.";
 
 const int SP_WIN_POPUP_FONTSIZE = 4;
 const int SP_WIN_POPUP_W = WINDOW_WIDTH;
 const int SP_WIN_POPUP_H = WINDOW_HEIGHT;
-// const char SP_WIN_POPUP[] =
-//     "Congratulations, you win!\n"
-//     "Press any key to return to the menu.";
-// const char MP_TIE_POPUP[] =
-//     "The game is a tie!\n"
-//     "Press any key to return to the menu.";
-// const char MP_P1_WIN_POPUP[] =
-//     "Player 1 wins!\n"
-//     "Press any key to return to the menu.";
-// const char MP_P2_WIN_POPUP[] =
-//     "Player 2 wins!\n"
-//     "Press any key to return to the menu.";
 
 const int TEXT_LINE_SPACING = 2;
 
