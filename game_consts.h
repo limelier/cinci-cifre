@@ -87,3 +87,9 @@ const int SP_WIN_POPUP_H = WINDOW_HEIGHT;
 //     "Press any key to return to the menu.";
 
 const int TEXT_LINE_SPACING = 2;
+
+const int SSW_BG_H = 25;
+const int SSW_BG_W = 40;
+const int SSW_PADDING = 2;
+const int SSW_TEXT_OFFSET = 60;
+const int SSW_FONTSIZE = 2;

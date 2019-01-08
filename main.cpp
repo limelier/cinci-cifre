@@ -11,6 +11,13 @@ int main() {
     setvisualpage(1);
     srand(time(nullptr));
 
+    // testing
+    // slide_switch ssw;
+    // ssw.x = 200;
+    // ssw.y = 200;
+    // drawSSwitch(ssw);
+    // getch();
+    
     game();
 
     closegraph();

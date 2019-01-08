@@ -142,6 +142,56 @@ void buttonLoopStep(button &btn) {
 }
 #pragma endregion
 
+#pragma region Slide Switches 
+
+struct slide_switch {
+    char label1[4] = "ON";
+    char label2[4] = "OFF";
+    int x = 0;
+    int y = 0;
+    bool value = true;
+    bool hover = false;
+
+    RGB_color bg = SSW_BG;
+    RGB_color fg = SSW_FG;
+    RGB_color hover_col = SSW_HOV;
+    RGB_color text = SSW_TEXT;
+    RGB_color backing = SSW_BACKING;
+};
+
+void drawSSwitch (slide_switch ssw) {
+    int x = ssw.x;
+    int y = ssw.y;
+
+    int top = x - SSW_BG_H / 2;
+    int bottom = x + SSW_BG_H / 2;
+    int left = x - SSW_BG_W / 2;
+    int right = x + SSW_BG_W / 2;
+
+    RGB_color outline = ssw.hover ? ssw.hover_col : ssw.bg;
+    setcolorRGB(outline);
+    setfillstyleFlatRGB(ssw.bg);
+    drawFilledRect(left, top, right, bottom);
+
+    top += SSW_PADDING;
+    bottom -= SSW_PADDING;
+    if (ssw.value == false) {
+        left += SSW_PADDING;
+        right = x;
+    }
+    else {
+        left = x;
+        right -= SSW_PADDING;
+    }
+    setcolorRGB(ssw.fg);
+    setfillstyleFlatRGB(ssw.fg);
+    drawFilledRect(left, top, right, bottom);
+    drawCenteredText(x - SSW_TEXT_OFFSET, y, ssw.label1, ssw.text, ssw.backing, SSW_FONTSIZE);
+    drawCenteredText(x + SSW_TEXT_OFFSET, y, ssw.label2, ssw.text, ssw.backing, SSW_FONTSIZE);
+}
+
+#pragma endregion
+
 #pragma region Popups
 void drawPopup (int width, int height, int fontsize, char text[]) { // todo: proper multi-line formatting
     setcolorRGB(POPUP_BG);
