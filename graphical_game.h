@@ -607,11 +607,14 @@ permutation inputPermutation2() {
         // look for digit key hits
         if (kbhit()) {
             char key = getch();
-            if (key >= '0' && key <= '9')
+            if (key >= '0' && key <= '9') {
                 if (input_stack.size < PERM_LEN) {
                     push(input_stack, (int)(key - '0'));
                     input_stack_changed = true;
                 }
+            }
+            else if (key == KEY_DELETE)
+                back_to_menu = true;
         }
         // look for button hits: enter, C and CE
         if (ismouseclick(WM_LBUTTONDOWN)) {
@@ -641,7 +644,7 @@ permutation inputPermutation2() {
             clearmouseclick(WM_LBUTTONDOWN);
         }
 
-        if (back_to_menu) break;
+        if (back_to_menu) return RandomPermutationGenerator();
     }
 
     return input;
@@ -677,10 +680,8 @@ void SPGameLoop(bool help) {
         if (game.list.first->res.fixed == 5)
             game.has_been_won = true;
 
-        if (back_to_menu) break;
+        if (back_to_menu) return;
     }
-
-    if (back_to_menu) return;
 
     char popup_text[200];
     strcpy(popup_text, tl_get_text(SP_WIN_POPUP));
@@ -729,10 +730,8 @@ void MPGameLoop() {
             game2.has_been_won = true;
         swapActiveGame(game1, game2);
 
-        if (back_to_menu) break;
+        if (back_to_menu) return;
     }
-
-    if (back_to_menu) return;
 
     char popup_text[200];
     if (game1.has_been_won)
@@ -765,11 +764,11 @@ void AIGameLoop() {
         EasyAI(game);
         Sleep(300);
 
-        if (back_to_menu)
-            break;   
-    }
-    if (back_to_menu) return;
+        if (kbhit() && getch() == KEY_DELETE)
+            back_to_menu = true;
 
+        if (back_to_menu) return;
+    }
 
     Sleep(2000);
 
@@ -852,12 +851,15 @@ void playMenu() {
             }
         }
 
+        if (kbhit() && getch() == KEY_DELETE)
+            back_to_menu = true;
         if (back_to_menu)
-            break;
+            return;
     }
 }
 
 void game() {
+
     button btn_play = initMenuButton(0, tl_get_text(BTN_PLAY));
     button btn_settings = initMenuButton(1, tl_get_text(BTN_SETTINGS));
     button btn_help = initMenuButton(2, tl_get_text(BTN_HELP));
@@ -865,6 +867,11 @@ void game() {
 
     bool menu_landing = true;
     while (true) {
+        if (back_to_menu) {
+            back_to_menu = false;
+            menu_landing = true;
+        }
+
         if (menu_landing) {
             setbkcolorRGB(MENU_BG);
             cleardevice();
@@ -876,6 +883,7 @@ void game() {
             drawButton(btn_quit);    
 
             menu_landing = false;
+        
         }
         
         buttonLoopStep(btn_play);
