@@ -32,10 +32,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="CLI_game.h" />
+		<Unit filename="colors.h" />
+		<Unit filename="game_consts.h" />
+		<Unit filename="graphical_game.h" />
 		<Unit filename="lang.cpp" />
 		<Unit filename="lang_en.cpp" />
 		<Unit filename="lang_ro.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="mystack.h" />
+		<Unit filename="rares_depends.h" />
+		<Unit filename="rpg.h" />
+		<Unit filename="settings.cfg" />
+		<Unit filename="settings.h" />
+		<Unit filename="sounds.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

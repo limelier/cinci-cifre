@@ -49,9 +49,10 @@ void EasyAI(game_panel &game)//The main AI function
     permutation InputPerm = game.base_perm;
 
     guessnode *CurrentPermutation;
-    permutation DefaultPerm = RandomPermutationGenerator();
+    permutation DefaultPerm;
     if(game.list.num == 0)//Creeaza primul element din stiva
     {
+        DefaultPerm = RandomPermutationGenerator();
         CurrentPermutation = makeGuess(InputPerm, DefaultPerm);
         guesslistPush(game.list, CurrentPermutation);
     }

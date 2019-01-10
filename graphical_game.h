@@ -13,7 +13,7 @@
 
 bool back_to_menu = false;
 
-#pragma region Base_Functions
+// Base_Functions
 void drawFilledRect(int left, int top, int right, int bottom) {
     int poly_points[8] =
     {
@@ -125,9 +125,9 @@ void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg
     chunk[i - j] = '\0';
     drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
 }
-#pragma endregion
 
-#pragma region Buttons
+
+// Buttons
 struct button_graphics {
     RGB_color bg = _WHITE;
     RGB_color bg_hover = _BLACK;
@@ -185,9 +185,9 @@ void buttonLoopStep(button &btn) {
 void updateButtonText(button &btn, const char text[]) {
     strcpy(btn.graph.text, text);
 }
-#pragma endregion
 
-#pragma region Slide Switches 
+
+// Slide Switches 
 
 struct slide_switch {
     char label1[4] = "ON";
@@ -270,9 +270,9 @@ void SSwitchFlick(slide_switch &ssw) {
     drawSSwitch(ssw);
 }
 
-#pragma endregion
 
-#pragma region Settings 
+
+// Settings 
 
 struct setting {
     char name[50] = "Setting";
@@ -287,9 +287,9 @@ void drawSetting(setting &sett) {
     drawSSwitch(sett.ssw);
 }
 
-#pragma endregion
 
-#pragma region Popups
+
+// Popups
 void drawPopup (int width, int height, int fontsize, char text[]) { // todo: proper multi-line formatting
     setcolorRGB(POPUP_BG);
     setfillstyleFlatRGB(POPUP_BG);
@@ -310,9 +310,9 @@ void popup (int width, int height, int fontsize, char text[]) {
     setactivepage(1);
     setvisualpage(1);
 }
-#pragma endregion
 
-#pragma region Game_Panel
+
+// Game_Panel
 void drawDigit(int left, int top, unsigned short num, bool greyed_out) {
     RGB_color bg_color;
     if (greyed_out == true) {
@@ -533,9 +533,9 @@ void swapActiveGame(game_panel &game1, game_panel &game2) {
         game2.active = false;
     }
 }
-#pragma endregion
 
-#pragma region Input_Panel
+
+// Input_Panel
 void drawInputBacking() {
     setcolorRGB(INP_BACKING);
     setfillstyleFlatRGB(INP_BACKING);
@@ -561,10 +561,8 @@ void drawInputStack(stack stk) {
 
     while (!emptyStack(input_stack)) {
         text[input_stack.size - 1] = top(input_stack) + '0';
-        cerr << top(input_stack) << ' ';
         pop(input_stack);
     }
-    cerr << endl << text << endl;
 
     int top = INP_BOX_TOP + INP_BOX_VERT_PADDING;
     int bottom = INP_BOX_BOTTOM - INP_BOX_VERT_PADDING;
@@ -709,11 +707,11 @@ permutation inputPermutation2() {
 
     return input;
 }
-#pragma endregion
+
 
 #include "rares_depends.h"
 
-#pragma region Game_Loops
+// Game_Loops
 void SPGameLoop(bool help) {
     game_panel game;
     setbkcolorRGB(_BLACK);
@@ -837,9 +835,9 @@ void AIGameLoop() {
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
 }
-#pragma endregion
 
-#pragma region Menus_and_screens
+
+// Menus_and_screens
 button initMenuButton(int index, const char text[]) {
     // THE MENU ALWAYS HAS A MAXIMUM OF FOUR BUTTONS
     button btn;
@@ -874,7 +872,12 @@ void infoScreen() {
     strcpy(text, tl_get_text(INFO));
     drawMultiText(30, 30, text, SETTINGS_FG, SETTINGS_BG, 1);
 
-    getch();
+    while (true) {
+        if (kbhit() && getch() == KEY_DELETE) {
+            back_to_menu = true;
+            return;
+        }
+    }
 }
 
 void settingsMenu() {
@@ -901,13 +904,13 @@ void settingsMenu() {
     strcpy(sett_sound.name, tl_get_text(SETTING_SOUND));
 
     drawSetting(sett_lang);
-    drawSetting(sett_music);
-    drawSetting(sett_sound);
+    // drawSetting(sett_music);
+    // drawSetting(sett_sound);
 
     while (true) {
         SSwitchLoopStep(sett_lang.ssw);
-        SSwitchLoopStep(sett_music.ssw);
-        SSwitchLoopStep(sett_sound.ssw);
+        // SSwitchLoopStep(sett_music.ssw);
+        // SSwitchLoopStep(sett_sound.ssw);
 
         if (ismouseclick(WM_LBUTTONDOWN)) {
             clearmouseclick(WM_LBUTTONDOWN);
@@ -915,14 +918,14 @@ void settingsMenu() {
                 SSwitchFlick(sett_lang.ssw);
                 setSetting("lang", sett_lang.ssw.value);
             }
-            if (sett_music.ssw.hover) {
-                SSwitchFlick(sett_music.ssw);
-                setSetting("music", sett_music.ssw.value);
-            }
-            if (sett_sound.ssw.hover) {
-                SSwitchFlick(sett_sound.ssw);
-                setSetting("sound", sett_sound.ssw.value);
-            }
+            // if (sett_music.ssw.hover) {
+            //     SSwitchFlick(sett_music.ssw);
+            //     setSetting("music", sett_music.ssw.value);
+            // }
+            // if (sett_sound.ssw.hover) {
+            //     SSwitchFlick(sett_sound.ssw);
+            //     setSetting("sound", sett_sound.ssw.value);
+            // }
         }
 
         if (kbhit() && getch() == KEY_DELETE) {
@@ -1040,4 +1043,4 @@ void game() {
         }
     }
 }
-#pragma endregion
+
