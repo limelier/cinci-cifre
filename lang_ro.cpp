@@ -32,6 +32,31 @@ const char *lang_ro[END_TRANSLATIONS] = {
     // SETTING_SOUND,
     "Sunet",
 
+    // INFO,
+    "Bine ati venit \"Cinci cifre\"!\n"
+    "\n"
+    "Controale: tastele numerice pentru panoul de input, si mouse-ul in \n"
+    "rest. Tasta DELETE va va duce tot timpul inapoi la meniu. \n"
+    "\n"
+    "Un jucator: calculatorul va va da un numar aleator de cinci cifre, \n"
+    "cu fiecare cifra unica. Apoi, va trebui sa incercati sa ghiciti, si  \n"
+    "vi se va spune cate din cifrele pe care le-ati ghicit sunt 'fixate',  \n"
+    "adica corecte si in locul potrivit, si cate sunt 'mutate', adica \n"
+    "corecte, dar in locul gresit. Jocul se va termina atunci cand veti \n"
+    "reusi sa ghiciti numarul\n"
+    "\n"
+    "Un jucator cu ajutor: Similar, dar altcineva va trebui sa va aleaga \n"
+    "permutarea pe care trebuie sa o ghiciti. \n"
+    "\n"
+    "Doi jucatori: La fel ca mai sus, dar cu doi jucatori, fiecare fiind \n"
+    "ajutor pentru celalalt jucator. \n"
+    "\n"
+    "Demonstratie AI: Dati-i calculatorului o permutare, si el va incerca \n"
+    "sa o ghiceasca. \n"
+    "\n"
+    "\n"
+    "Programat de Iacobescu Tudor si Savin Rares. \n",
+
     // LABEL1,
     "centrate",
     // LABEL2,

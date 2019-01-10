@@ -32,6 +32,30 @@ const char *lang_en[END_TRANSLATIONS] = {
     // SETTING_SOUND,
     "Sound",
 
+    // INFO,
+    "Welcome to \"Five digits\"!\n"
+    "\n"
+    "Controls: number keys for the input panel, the mouse otherwise. \n"
+    "The DELETE key always goes back to the menu. \n"
+    "\n"
+    "Singleplayer: the computer will give you a random five digit number, \n"
+    "with each digit unique. You then get to make guesses, and will be \n"
+    "told how many of the digits you guessed were 'fixed', meaning that \n"
+    "they were correct and in the right place, or 'moved', meaning that \n"
+    "they were correct, but in the wrong place. The game ends when you've \n"
+    "guessed right.\n"
+    "\n"
+    "Singleplayer with help: Similar, but someone else gets to pick your \n"
+    "target for you. Don't look!\n"
+    "\n"
+    "Multiplayer: Singleplayer with help, but for two people! The blue \n"
+    "game panel is the active one, that is currently receiving inputs. \n"
+    "\n"
+    "AI demonstration: Give the AI a permutation and watch it struggle.\n"
+    "\n"
+    "\n"
+    "Programming by Iacobescu Tudor and Savin Rares. \n",
+
     // LABEL1,
     "fixed",
     // LABEL2,

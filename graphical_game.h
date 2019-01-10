@@ -51,6 +51,45 @@ void drawCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int
     outtextxy(x, y, text);
 }
 
+void drawMultiText(int x, int y, char text[], RGB_color fg, RGB_color bg, int fontsize) {
+    char chunk[200];
+    int length = strlen(text);
+    int lines = 1;
+
+    for (int i = 0; i < length; i++) {
+        if (text[i] == '\n')
+            lines++;
+    }
+
+    settextstyle(COMPLEX_FONT, HORIZ_DIR, fontsize);
+    int line_height = textheight(text);
+    line_height += TEXT_LINE_SPACING;
+
+    // int line_y;
+    // line_y = y - (lines / 2) * line_height;
+    // if (lines % 2 == 0)
+    //     line_y += line_height / 2;
+
+    setcolorRGB(fg);
+    setbkcolorRGB(bg);
+
+    int j = 0;
+    int i;
+    for (i = 0; i < length; i++) {
+        if (text[i] == '\n') {
+            strncpy(chunk, text + j, i - j);
+            chunk[i - j] = '\0';
+            outtextxy(x, y, chunk);
+            y += line_height;
+            j = i + 1;
+        }
+    }
+
+    strncpy(chunk, text + j, i - j);
+    chunk[i - j] = '\0';
+    outtextxy(x, y, chunk);
+}
+
 void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg, int fontsize) {
     char chunk[200];
     int length = strlen(text);
@@ -85,8 +124,6 @@ void drawMultiCenteredText(int x, int y, char text[], RGB_color fg, RGB_color bg
     strncpy(chunk, text + j, i - j);
     chunk[i - j] = '\0';
     drawCenteredText(x, line_y, chunk, fg, bg, fontsize);
-
-
 }
 #pragma endregion
 
@@ -829,6 +866,17 @@ void drawGameTitle() {
     drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, title, TITLE_FG, MENU_BG, TITLE_FONTSIZE);
 }
 
+void infoScreen() {
+    setbkcolorRGB(MENU_BG);
+    cleardevice();
+
+    char text[9999];
+    strcpy(text, tl_get_text(INFO));
+    drawMultiText(30, 30, text, SETTINGS_FG, SETTINGS_BG, 1);
+
+    getch();
+}
+
 void settingsMenu() {
     setbkcolorRGB(MENU_BG);
     cleardevice();
@@ -978,6 +1026,11 @@ void game() {
 
             if (btn_settings.hover) {
                 settingsMenu();
+                menu_landing = true;
+            }
+
+            if (btn_help.hover) {
+                infoScreen();
                 menu_landing = true;
             }
 

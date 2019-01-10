@@ -23,6 +23,8 @@ enum translation {
     SETTING_MUSIC,
     SETTING_SOUND,
 
+    INFO,
+
     LABEL1,
     LABEL2,
     
