@@ -7,7 +7,9 @@
 #include "mystack.h"
 #include "game_consts.h"
 #include "colors.h"
+#include "settings.h"
 #include "lang.h"
+#include "sounds.h"
 
 bool back_to_menu = false;
 
@@ -142,6 +144,10 @@ void buttonLoopStep(button &btn) {
         drawButton(btn);
     }
 }
+
+void updateButtonText(button &btn, const char text[]) {
+    strcpy(btn.graph.text, text);
+}
 #pragma endregion
 
 #pragma region Slide Switches 
@@ -237,7 +243,7 @@ struct setting {
     int index = 0;
 };
 
-void drawSetting(setting sett) {
+void drawSetting(setting &sett) {
     int y = SETTING_ZERO_Y + sett.index * SETTING_SPACING;
     sett.ssw.y = y;
     drawCenteredText(SETTING_TEXT_X, y, sett.name, SETTING_TEXT, SETTING_BACKING, SETTING_CHARSIZE);
@@ -833,6 +839,7 @@ void settingsMenu() {
 
     setting sett_lang;
     sett_lang.index = 0;
+    sett_lang.ssw.value = tl_get_lang() == LANG_EN ? true : false;
     strcpy(sett_lang.name, tl_get_text(SETTING_LANG));
     strcpy(sett_lang.ssw.label1, "RO");
     strcpy(sett_lang.ssw.label2, "EN");
@@ -849,7 +856,31 @@ void settingsMenu() {
     drawSetting(sett_music);
     drawSetting(sett_sound);
 
-    getch();
+    while (true) {
+        SSwitchLoopStep(sett_lang.ssw);
+        SSwitchLoopStep(sett_music.ssw);
+        SSwitchLoopStep(sett_sound.ssw);
+
+        if (ismouseclick(WM_LBUTTONDOWN)) {
+            clearmouseclick(WM_LBUTTONDOWN);
+            if (sett_lang.ssw.hover) {
+                SSwitchFlick(sett_lang.ssw);
+                setSetting("lang", sett_lang.ssw.value);
+            }
+            if (sett_music.ssw.hover) {
+                SSwitchFlick(sett_music.ssw);
+                setSetting("music", sett_music.ssw.value);
+            }
+            if (sett_sound.ssw.hover) {
+                SSwitchFlick(sett_sound.ssw);
+                setSetting("sound", sett_sound.ssw.value);
+            }
+        }
+
+        if (kbhit() && getch() == KEY_DELETE) {
+            return;
+        }
+    }
 }
 
 void playMenu() {
@@ -905,6 +936,7 @@ void playMenu() {
 }
 
 void game() {
+    tl_set_lang(getSetting("lang"));
 
     button btn_play = initMenuButton(0, tl_get_text(BTN_PLAY));
     button btn_settings = initMenuButton(1, tl_get_text(BTN_SETTINGS));

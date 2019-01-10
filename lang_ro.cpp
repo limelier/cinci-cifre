@@ -24,7 +24,7 @@ const char *lang_ro[END_TRANSLATIONS] = {
     "Demonstratie AI",
 
     // SETTINGS_TEXT,
-    "Setari",
+    "Setarile se aplica dupa repornirea jocului.",
     // SETTING_LANG,
     "Limba",
     // SETTING_MUSIC,

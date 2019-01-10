@@ -24,7 +24,7 @@ const char *lang_en[END_TRANSLATIONS] = {
     "AI demonstration",
 
     // SETTINGS_TEXT,
-    "Settings",
+    "Settings only apply after a restart.",
     // SETTING_LANG,
     "Language",
     // SETTING_MUSIC,

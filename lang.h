@@ -39,5 +39,7 @@ enum translation {
 extern const char* lang_en[END_TRANSLATIONS];
 extern const char* lang_ro[END_TRANSLATIONS];
 
-void tl_set_lang(language lang);
+language tl_get_lang();
+void tl_set_lang(bool english);
+void tl_switch_lang();
 const char* tl_get_text(translation text);
