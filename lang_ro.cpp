@@ -23,6 +23,15 @@ const char *lang_ro[END_TRANSLATIONS] = {
     // BTN_AI,
     "Demonstratie AI",
 
+    // SETTINGS_TEXT,
+    "Setari",
+    // SETTING_LANG,
+    "Limba",
+    // SETTING_MUSIC,
+    "Muzica",
+    // SETTING_SOUND,
+    "Sunet",
+
     // LABEL1,
     "centrate",
     // LABEL2,

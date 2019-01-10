@@ -149,7 +149,7 @@ void buttonLoopStep(button &btn) {
 struct slide_switch {
     char label1[4] = "ON";
     char label2[4] = "OFF";
-    int x = 0;
+    int x = SETTING_SSW_X;
     int y = 0;
     bool value = true;
     bool hover = false;
@@ -225,6 +225,23 @@ void SSwitchLoopStep(slide_switch &ssw) {
 void SSwitchFlick(slide_switch &ssw) {
     ssw.value = 1 - ssw.value;
     drawSSwitch(ssw);
+}
+
+#pragma endregion
+
+#pragma region Settings 
+
+struct setting {
+    char name[50] = "Setting";
+    slide_switch ssw;
+    int index = 0;
+};
+
+void drawSetting(setting sett) {
+    int y = SETTING_ZERO_Y + sett.index * SETTING_SPACING;
+    sett.ssw.y = y;
+    drawCenteredText(SETTING_TEXT_X, y, sett.name, SETTING_TEXT, SETTING_BACKING, SETTING_CHARSIZE);
+    drawSSwitch(sett.ssw);
 }
 
 #pragma endregion
@@ -806,6 +823,35 @@ void drawGameTitle() {
     drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, title, TITLE_FG, MENU_BG, TITLE_FONTSIZE);
 }
 
+void settingsMenu() {
+    setbkcolorRGB(MENU_BG);
+    cleardevice();
+
+    char text[200];
+    strcpy(text, tl_get_text(SETTINGS_TEXT));
+    drawCenteredText(WINDOW_WIDTH / 2, MENU_OFFSET / 2, text, SETTINGS_FG, SETTINGS_BG, PLAY_FONTSIZE);
+
+    setting sett_lang;
+    sett_lang.index = 0;
+    strcpy(sett_lang.name, tl_get_text(SETTING_LANG));
+    strcpy(sett_lang.ssw.label1, "RO");
+    strcpy(sett_lang.ssw.label2, "EN");
+
+    setting sett_music;
+    sett_music.index = 1;
+    strcpy(sett_music.name, tl_get_text(SETTING_MUSIC));
+
+    setting sett_sound;
+    sett_sound.index = 2;
+    strcpy(sett_sound.name, tl_get_text(SETTING_SOUND));
+
+    drawSetting(sett_lang);
+    drawSetting(sett_music);
+    drawSetting(sett_sound);
+
+    getch();
+}
+
 void playMenu() {
     setbkcolorRGB(MENU_BG);
     cleardevice();
@@ -895,6 +941,11 @@ void game() {
             clearmouseclick(WM_LBUTTONDOWN);
             if (btn_play.hover) {
                 playMenu();
+                menu_landing = true;
+            }
+
+            if (btn_settings.hover) {
+                settingsMenu();
                 menu_landing = true;
             }
 

@@ -23,6 +23,15 @@ const char *lang_en[END_TRANSLATIONS] = {
     // BTN_AI,
     "AI demonstration",
 
+    // SETTINGS_TEXT,
+    "Settings",
+    // SETTING_LANG,
+    "Language",
+    // SETTING_MUSIC,
+    "Music",
+    // SETTING_SOUND,
+    "Sound",
+
     // LABEL1,
     "fixed",
     // LABEL2,

@@ -18,6 +18,11 @@ enum translation {
     BTN_MULTIPLAYER,
     BTN_AI,
 
+    SETTINGS_TEXT,
+    SETTING_LANG,
+    SETTING_MUSIC,
+    SETTING_SOUND,
+
     LABEL1,
     LABEL2,
     

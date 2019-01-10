@@ -62,11 +62,18 @@ const RGB_color _GREY {100, 100, 100};
 #define POPUP_FG _BLACK
 
     // slide switches
-#define SSW_BG _BLACK
+#define SSW_BG _DK_BLUEGRAY
 #define SSW_FG _BLUEGRAY
 #define SSW_HOV _BLUE
-#define SSW_TEXT _BLACK
-#define SSW_BACKING _DK_BLUEGRAY
+#define SSW_TEXT _WHITE
+#define SSW_BACKING _BLACK
+
+    // settings
+#define SETTING_TEXT _WHITE
+#define SETTING_BACKING _BLACK
+#define SETTINGS_FG _WHITE
+#define SETTINGS_BG _BLACK
+
 
 // FUNCTIONS
 

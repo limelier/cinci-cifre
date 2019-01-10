@@ -1,6 +1,6 @@
 #include "lang.h"
 
-language tl_lang = LANG_RO;
+language tl_lang = LANG_EN;
 
 void tl_set_lang(language lang) {
     tl_lang = lang;

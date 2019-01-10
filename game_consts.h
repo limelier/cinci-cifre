@@ -60,3 +60,9 @@ const int SSW_BG_W = 40;
 const int SSW_PADDING = 2;
 const int SSW_TEXT_OFFSET = 45;
 const int SSW_FONTSIZE = 2;
+
+const int SETTING_CHARSIZE = 3;
+const int SETTING_ZERO_Y = 200;
+const int SETTING_SPACING = 80;
+const int SETTING_TEXT_X = 200;
+const int SETTING_SSW_X = 600;

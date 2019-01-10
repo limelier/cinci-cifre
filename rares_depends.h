@@ -61,7 +61,7 @@ void EasyAI(game_panel &game)//The main AI function
         //Cauta in functie de cel mai recent element din stiva
         if(game.list.first->res.moved + game.list.first->res.fixed == 5)
         {
-            CurrentPermutation = makeGuess(Shuffle(DefaultPerm), DefaultPerm);
+            CurrentPermutation = makeGuess(InputPerm, Shuffle(DefaultPerm));
             guesslistPush(game.list, CurrentPermutation);
         }
         else if(game.list.first->res.moved + game.list.first->res.fixed == 0)

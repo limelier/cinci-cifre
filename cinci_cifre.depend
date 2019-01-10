@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1543509740 source:c:\users\asus\desktop\cinci_cifre\main.cpp
+1546990481 source:c:\users\asus\desktop\cinci_cifre\main.cpp
 	<iostream>
-	<winbgim.h>
 	<stdlib.h>
+	"graphical_game.h"
+	"CLI_game.h"
 
 1546727699 source:c:\users\limelier\desktop\cinci-cifre\cinci-cifre\main.cpp
 	<iostream>
@@ -30,4 +31,52 @@
 	<iostream>
 	<fstream>
 	<string>
+
+1546992328 c:\users\asus\desktop\cinci_cifre\graphical_game.h
+	"base_dependencies.h"
+	"rpg.h"
+	<string.h>
+	<winbgim.h>
+	"mystack.h"
+	"game_consts.h"
+	"colors.h"
+	"lang.h"
+	"rares_depends.h"
+
+1546266524 c:\users\asus\desktop\cinci_cifre\base_dependencies.h
+
+1546973005 c:\users\asus\desktop\cinci_cifre\rpg.h
+	<ctime>
+	<stdlib.h>
+	"base_dependencies.h"
+
+1546862076 c:\users\asus\desktop\cinci_cifre\mystack.h
+
+1546991031 c:\users\asus\desktop\cinci_cifre\game_consts.h
+
+1546945575 c:\users\asus\desktop\cinci_cifre\colors.h
+	<winbgim.h>
+
+1546876405 c:\users\asus\desktop\cinci_cifre\lang.h
+
+1546973368 c:\users\asus\desktop\cinci_cifre\rares_depends.h
+	<ctime>
+	<stdlib.h>
+	"base_dependencies.h"
+
+1545825889 c:\users\asus\desktop\cinci_cifre\cli_game.h
+	"base_dependencies.h"
+	<string.h>
+	<iostream>
+	<fstream>
+	<string>
+
+1547028614 source:c:\users\asus\desktop\cinci_cifre\lang.cpp
+	"lang.h"
+
+1546877460 source:c:\users\asus\desktop\cinci_cifre\lang_en.cpp
+	"lang.h"
+
+1546877952 source:c:\users\asus\desktop\cinci_cifre\lang_ro.cpp
+	"lang.h"
 
