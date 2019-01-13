@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "graphical_game.h"
 #include "CLI_game.h"  
-#include "portaudio.h"
 using namespace std;
 
 int main() {

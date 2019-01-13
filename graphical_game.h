@@ -190,8 +190,8 @@ void updateButtonText(button &btn, const char text[]) {
 // Slide Switches 
 
 struct slide_switch {
-    char label1[4] = "ON";
-    char label2[4] = "OFF";
+    char label1[4] = "OFF";
+    char label2[4] = "ON";
     int x = SETTING_SSW_X;
     int y = 0;
     bool value = true;
@@ -667,6 +667,7 @@ permutation inputPermutation2() {
             char key = getch();
             if (key >= '0' && key <= '9') {
                 if (input_stack.size < PERM_LEN) {
+                    sndButton();
                     push(input_stack, (int)(key - '0'));
                     input_stack_changed = true;
                 }
@@ -677,19 +678,25 @@ permutation inputPermutation2() {
         // look for button hits: enter, C and CE
         if (ismouseclick(WM_LBUTTONDOWN)) {
             if (btn_C.hover && !emptyStack(input_stack)) {
+                sndButton();
                 pop(input_stack);
                 input_stack_changed = true;
             }
             else if (btn_CE.hover && !emptyStack(input_stack)) {
+                sndButton();
                 while (!emptyStack(input_stack))
                     pop(input_stack);
                 input_stack_changed = true;
             }
             else if (btn_enter.hover && input_stack.size == PERM_LEN) {
+                sndButton();
                 input = permFromStack(input_stack);
-                if (input.is_valid == true)
+                if (input.is_valid == true) {
+                    sndPong();
                     perm_complete = true;
+                }
                 else {
+                    sndError();
                     char popup_text[200];
                     strcpy(popup_text, tl_get_text(INPUT_ERR_POPUP));
                     popup(INPUT_ERR_POPUP_W, INPUT_ERR_POPUP_H, INPUT_ERR_POPUP_FONTSIZE, popup_text);
@@ -716,6 +723,7 @@ void SPGameLoop(bool help) {
     game_panel game;
     setbkcolorRGB(_BLACK);
     cleardevice();
+    music();
 
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
@@ -741,6 +749,8 @@ void SPGameLoop(bool help) {
         if (back_to_menu) return;
     }
 
+    stopMusic();
+    sndWin();
     char popup_text[200];
     strcpy(popup_text, tl_get_text(SP_WIN_POPUP));
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
@@ -752,7 +762,7 @@ void MPGameLoop() {
     game_panel game2;
     setbkcolorRGB(_BLACK);
     cleardevice();
-
+    music();
 
     int game1_left = WINDOW_WIDTH / 2 - MP_SPACING / 2 - gamePanelWidth();
     int game2_left = game1_left + gamePanelWidth() + MP_SPACING;
@@ -800,6 +810,8 @@ void MPGameLoop() {
     else if (game2.has_been_won)
         strcpy(popup_text, tl_get_text(MP_P2_WIN_POPUP));
     
+    stopMusic();
+    sndWin();
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
     cleardevice();
 }
@@ -808,6 +820,7 @@ void AIGameLoop() {
     game_panel game;
     setbkcolorRGB(_BLACK);
     cleardevice();
+    music();
 
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
@@ -828,8 +841,9 @@ void AIGameLoop() {
         if (back_to_menu) return;
     }
 
+    stopMusic();
+    sndWin();
     Sleep(2000);
-
     char popup_text[200];
     strcpy(popup_text, tl_get_text(SP_WIN_POPUP));
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
@@ -904,31 +918,35 @@ void settingsMenu() {
     strcpy(sett_sound.name, tl_get_text(SETTING_SOUND));
 
     drawSetting(sett_lang);
-    // drawSetting(sett_music);
-    // drawSetting(sett_sound);
+    drawSetting(sett_music);
+    drawSetting(sett_sound);
 
     while (true) {
         SSwitchLoopStep(sett_lang.ssw);
-        // SSwitchLoopStep(sett_music.ssw);
-        // SSwitchLoopStep(sett_sound.ssw);
+        SSwitchLoopStep(sett_music.ssw);
+        SSwitchLoopStep(sett_sound.ssw);
 
         if (ismouseclick(WM_LBUTTONDOWN)) {
             clearmouseclick(WM_LBUTTONDOWN);
             if (sett_lang.ssw.hover) {
+                sndSSwitch();
                 SSwitchFlick(sett_lang.ssw);
                 setSetting("lang", sett_lang.ssw.value);
             }
-            // if (sett_music.ssw.hover) {
-            //     SSwitchFlick(sett_music.ssw);
-            //     setSetting("music", sett_music.ssw.value);
-            // }
-            // if (sett_sound.ssw.hover) {
-            //     SSwitchFlick(sett_sound.ssw);
-            //     setSetting("sound", sett_sound.ssw.value);
-            // }
+            if (sett_music.ssw.hover) {
+                sndSSwitch();
+                SSwitchFlick(sett_music.ssw);
+                setSetting("music", sett_music.ssw.value);
+            }
+            if (sett_sound.ssw.hover) {
+                sndSSwitch();
+                SSwitchFlick(sett_sound.ssw);
+                setSetting("sound", sett_sound.ssw.value);
+            }
         }
 
         if (kbhit() && getch() == KEY_DELETE) {
+            back_to_menu = true;
             return;
         }
     }
@@ -962,18 +980,22 @@ void playMenu() {
         if (ismouseclick(WM_LBUTTONDOWN)) {
             clearmouseclick(WM_LBUTTONDOWN);
             if (btn_SP.hover) {
+                sndButton();
                 SPGameLoop(false);
                 game_selected = true;
             }
             if (btn_SPP.hover) {
+                sndButton();
                 SPGameLoop(true);
                 game_selected = true;
             }
             if (btn_MP.hover) {
+                sndButton();
                 MPGameLoop();
                 game_selected = true;
             }
             if (btn_AI.hover) {
+                sndButton();
                 AIGameLoop();
                 game_selected = true;
             }
@@ -1002,6 +1024,9 @@ void game() {
         }
 
         if (menu_landing) {
+            stopSound();
+            sndButton();
+
             setbkcolorRGB(MENU_BG);
             cleardevice();
             drawGameTitle();
@@ -1023,21 +1048,25 @@ void game() {
         if (ismouseclick(WM_LBUTTONDOWN)) {
             clearmouseclick(WM_LBUTTONDOWN);
             if (btn_play.hover) {
+                sndButton();
                 playMenu();
                 menu_landing = true;
             }
 
             if (btn_settings.hover) {
+                sndButton();
                 settingsMenu();
                 menu_landing = true;
             }
 
             if (btn_help.hover) {
+                sndButton();
                 infoScreen();
                 menu_landing = true;
             }
 
             if (btn_quit.hover) {
+                sndButton();
                 break;
             }
         }

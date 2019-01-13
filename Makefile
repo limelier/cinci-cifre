@@ -1,5 +1,5 @@
 TARGET = prog
-LIBS = -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32
+LIBS = -lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32 -lwinmm
 CPP = g++
 CFLAGS = -g -Wall
 
