@@ -33,7 +33,7 @@ const char *lang_ro[END_TRANSLATIONS] = {
     "Sunet",
 
     // INFO,
-    "Bine ati venit \"Cinci cifre\"!\n"
+    "Bine ati venit la \"Cinci cifre\"!\n"
     "\n"
     "Controale: tastele numerice pentru panoul de input, si mouse-ul in \n"
     "rest. Tasta DELETE va va duce tot timpul inapoi la meniu. \n"
@@ -43,7 +43,7 @@ const char *lang_ro[END_TRANSLATIONS] = {
     "vi se va spune cate din cifrele pe care le-ati ghicit sunt 'fixate',  \n"
     "adica corecte si in locul potrivit, si cate sunt 'mutate', adica \n"
     "corecte, dar in locul gresit. Jocul se va termina atunci cand veti \n"
-    "reusi sa ghiciti numarul\n"
+    "reusi sa ghiciti numarul. \n"
     "\n"
     "Un jucator cu ajutor: Similar, dar altcineva va trebui sa va aleaga \n"
     "permutarea pe care trebuie sa o ghiciti. \n"
