@@ -187,7 +187,7 @@ void updateButtonText(button &btn, const char text[]) {
 }
 
 
-// Slide Switches 
+// Slide Switches
 
 struct slide_switch {
     char label1[4] = "OFF";
@@ -214,11 +214,11 @@ void drawSSwitch (slide_switch ssw) {
     int right = x + SSW_BG_W / 2;
 
     RGB_color outline;
-    if (ssw.hover) 
+    if (ssw.hover)
         outline = ssw.hover_col;
     else
         outline = ssw.bg;
-        
+
     setcolorRGB(outline);
     setfillstyleFlatRGB(ssw.bg);
     drawFilledRect(left, top, right, bottom);
@@ -272,7 +272,7 @@ void SSwitchFlick(slide_switch &ssw) {
 
 
 
-// Settings 
+// Settings
 
 struct setting {
     char name[50] = "Setting";
@@ -661,7 +661,7 @@ permutation inputPermutation2() {
         buttonLoopStep(btn_enter);
         buttonLoopStep(btn_CE);
         buttonLoopStep(btn_C);
-        
+
         // look for digit key hits
         if (kbhit()) {
             char key = getch();
@@ -727,7 +727,7 @@ void SPGameLoop(bool help) {
 
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
-    if (help) 
+    if (help)
         game.base_perm = inputPermutation2();
     else
         game.base_perm = RandomPermutationGenerator();
@@ -809,7 +809,7 @@ void MPGameLoop() {
             strcpy(popup_text, tl_get_text(MP_P1_WIN_POPUP));
     else if (game2.has_been_won)
         strcpy(popup_text, tl_get_text(MP_P2_WIN_POPUP));
-    
+
     stopMusic();
     sndWin();
     popup(SP_WIN_POPUP_W, SP_WIN_POPUP_H, SP_WIN_POPUP_FONTSIZE, popup_text);
@@ -825,7 +825,7 @@ void AIGameLoop() {
     int game_left = (WINDOW_WIDTH - gamePanelWidth()) / 2;
 
     game.base_perm = inputPermutation2();
-    
+
     while (game.has_been_won == false) {
         setbkcolorRGB(_BLACK);
         cleardevice();
@@ -858,7 +858,7 @@ button initMenuButton(int index, const char text[]) {
 
     btn.left = (WINDOW_WIDTH - MENU_BTN_W) / 2;
     btn.right = btn.left + MENU_BTN_W;
-    
+
     btn.top = MENU_OFFSET + index * (MENU_BTN_H + MENU_BTN_SPACING);
     btn.bottom = btn.top + MENU_BTN_H;
 
@@ -1025,6 +1025,7 @@ void game() {
 
         if (menu_landing) {
             stopSound();
+            stopMusic();
             sndButton();
 
             setbkcolorRGB(MENU_BG);
@@ -1034,12 +1035,12 @@ void game() {
             drawButton(btn_play);
             drawButton(btn_settings);
             drawButton(btn_help);
-            drawButton(btn_quit);    
+            drawButton(btn_quit);
 
             menu_landing = false;
-        
+
         }
-        
+
         buttonLoopStep(btn_play);
         buttonLoopStep(btn_settings);
         buttonLoopStep(btn_help);

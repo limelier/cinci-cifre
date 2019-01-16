@@ -1,9 +1,0 @@
-- exista o aplicatie pe pagina introp care ne da un model de citire a clickurilor de mouse
-
-
-1. functional game pvp
-
-2a. game pve
-2b. graphics shit
-
-3. polish shit

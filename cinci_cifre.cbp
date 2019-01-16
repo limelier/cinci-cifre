@@ -32,20 +32,33 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add option="-lwinmm" />
+		</Linker>
 		<Unit filename="CLI_game.h" />
+		<Unit filename="base_dependencies.h" />
+		<Unit filename="button.wav" />
 		<Unit filename="colors.h" />
+		<Unit filename="error.wav" />
 		<Unit filename="game_consts.h" />
 		<Unit filename="graphical_game.h" />
 		<Unit filename="lang.cpp" />
+		<Unit filename="lang.h" />
 		<Unit filename="lang_en.cpp" />
 		<Unit filename="lang_ro.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="music.h" />
+		<Unit filename="music.mp3" />
+		<Unit filename="music.wav" />
 		<Unit filename="mystack.h" />
+		<Unit filename="pong.wav" />
 		<Unit filename="rares_depends.h" />
 		<Unit filename="rpg.h" />
 		<Unit filename="settings.cfg" />
 		<Unit filename="settings.h" />
 		<Unit filename="sounds.h" />
+		<Unit filename="sswitch.wav" />
+		<Unit filename="win.wav" />
 		<Extensions>
 			<code_completion />
 			<envvars />

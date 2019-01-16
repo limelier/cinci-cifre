@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1547127568 source:c:\users\asus\desktop\cinci_cifre\main.cpp
+1547394657 source:c:\users\asus\desktop\cinci_cifre\main.cpp
 	<iostream>
 	<stdlib.h>
 	"graphical_game.h"
@@ -32,7 +32,7 @@
 	<fstream>
 	<string>
 
-1547137391 c:\users\asus\desktop\cinci_cifre\graphical_game.h
+1547626378 c:\users\asus\desktop\cinci_cifre\graphical_game.h
 	"base_dependencies.h"
 	"rpg.h"
 	<string.h>
@@ -79,12 +79,14 @@
 1547127957 source:c:\users\asus\desktop\cinci_cifre\lang_en.cpp
 	"lang.h"
 
-1547127925 source:c:\users\asus\desktop\cinci_cifre\lang_ro.cpp
+1547393460 source:c:\users\asus\desktop\cinci_cifre\lang_ro.cpp
 	"lang.h"
 
 1547123317 c:\users\asus\desktop\cinci_cifre\settings.h
 	<cstring>
 	<fstream>
 
-1547119957 c:\users\asus\desktop\cinci_cifre\sounds.h
+1547399785 c:\users\asus\desktop\cinci_cifre\sounds.h
+	<windows.h>
+	<mmsystem.h>
 
