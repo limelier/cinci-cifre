@@ -1,6 +1,8 @@
 # Cinci cifre
 An older variation of the game "Mastermind". Mouse and keyboard controls.
+
 The game only runs on Windows.
+
 Help is available in the in-game menu.
 
 ---
